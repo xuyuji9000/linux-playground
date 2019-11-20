@@ -9,11 +9,23 @@ During a sudden system crash or power failure, all the changes made in memory on
 
 ## Specification
 
-Periodically copy all the changes reflected in the memory to the disk.
-
-## Implementation
-
 Journaling reserve a contiguous portion of the disk, this way is thousand times faster than seeking dirty data location all around the disk.
+
+## Strategies 
+
+1. What is journaled?
+
+    - Writeback mode
+
+    Only the metadata is journlaed, and the data are written directly to their locations on the disk.
+
+    - Ordered mode
+
+    Journal metadata only, but writes the data before journaling the metadata.
+
+    - Data mode
+
+    Both metadata and data are journaled.
 
 ## Trade off of the Implementation
 
