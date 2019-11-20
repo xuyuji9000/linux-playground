@@ -25,8 +25,12 @@ Journaling reserve a contiguous portion of the disk, this way is thousand times 
 
 1. What was it like when there is no journaling file system? How the dirty data in memory goes into the disk ?
 
-2. Why use circular log as the data structure?
+2. Why use circular log / circular buffer / ring buffer as the data structure?
+
+
 
 ## Reference 
 
 1. [Journaling](https://www.youtube.com/watch?v=jey0BEqCEkM)
+
+2. [Anatomy of Linux journaling file systems](https://www.ibm.com/developerworks/library/l-journaling-filesystems/index.html)
