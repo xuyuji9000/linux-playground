@@ -1,3 +1,5 @@
+
+
 Q: How to cmpress a directory?
 
 A: 
@@ -11,3 +13,9 @@ A:
 
     # Short Version
     tar -czvf TARGET.tar.gz ./SOURCE_DIRECTORY
+
+Q: How to list contents from a tarball?
+
+A: 
+
+    tar -tvf ./ORIGINAL.tar.gz
