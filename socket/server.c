@@ -1,4 +1,4 @@
-// build command `gcc -o main ./main.c`
+// build command `gcc -o server ./server.c`
 
 
 #include <sys/socket.h>
