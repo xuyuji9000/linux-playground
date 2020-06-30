@@ -1,0 +1,1 @@
+build command: `gcc -o server ./server.c`

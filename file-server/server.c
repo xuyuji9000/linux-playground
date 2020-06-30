@@ -32,6 +32,6 @@ int main(int argc, char *argv[])
 
 fatal(char *string) 
 {
-    printf("%s\n", string)
-    exit(1)
+    printf("%s\n", string);
+    exit(1);
 }
