@@ -23,7 +23,7 @@ Bridge=br0
 ```
 #/etc/dhcpcd.conf
 ...
-denyinterfaces wlan1 eth0
+denyinterfaces wlan0 eth0
 interface br0
 ...
 ```
@@ -39,7 +39,7 @@ sudo apt install hostapd
 ```
 # /etc/hostapd/hostapd.conf
 country_code=CN
-interface=wlan1
+interface=wlan0
 bridge=br0
 ssid=06402
 hw_mode=g
