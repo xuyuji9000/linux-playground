@@ -1,5 +1,7 @@
 1. Setup network bridge
 
+> This can also implemented by **ip** command, but it is gone after reboot
+
 ```
 # add a bridge network 
 # /etc/systemd/network/bridge-br0.netdev
@@ -16,6 +18,11 @@ Name=eth0
 
 [Network]
 Bridge=br0
+```
+
+``` bash
+sudo systemctl restart systemd-networkd
+sudo systemctl enable systemd-networkd
 ```
 
 2. Give IP to bridge device
@@ -61,6 +68,11 @@ DAEMON_CONF="/etc/hostapd/hostapd.conf"
 ...
 ```
 
+``` bash
+sudo systemctl restart hostapd
+sudo systemctl enable hostapd
+```
+
 4. WiFi will work after reboot
 
 
@@ -70,3 +82,5 @@ DAEMON_CONF="/etc/hostapd/hostapd.conf"
 1. [Setting up a Raspberry Pi as a bridged wireless access point](https://www.raspberrypi.org/documentation/configuration/wireless/access-point-bridged.md)
 
 2. [systemd-networkd](https://wiki.archlinux.org/index.php/Systemd-networkd)
+
+3. [Network bridge](https://wiki.archlinux.org/index.php/Network_bridge)
