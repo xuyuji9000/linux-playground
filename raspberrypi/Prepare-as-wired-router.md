@@ -76,6 +76,10 @@ sudo systemctl enable hostapd
 4. WiFi will work after reboot
 
 
+# Problems
+
+- With this setup, laptop connecting into the 'router' is able to connect Internet, but the router is not able to access Internet now.
+
 
 # Reference
 
