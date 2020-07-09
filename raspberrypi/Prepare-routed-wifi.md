@@ -1,4 +1,25 @@
-1. DHCP client configuration 
+1. Prepare DHCP server and DNS service 
+
+``` bash
+# Install **dnsmasq** for DNS, DHCP services
+sudo apt install dnsmasq
+```
+
+``` bash
+# Backup original config
+sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
+```
+
+```
+# Configure dnsmasq
+# /etc/dnsmasq.conf
+interface=wlan0
+dncp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
+domain=wlan
+address=/gw.wlan/192.168.4.1                            # Alias for the router
+```
+
+2. Set Router ip through DHCP  
 
 ```
 # /etc/dhcpcd.conf
@@ -7,7 +28,7 @@ interface wlan0
     nohook wpa_supplicant
 ```
 
-2. Configure access point 
+3. Configure access point 
 
 ```
 # Install **hostapd** for WIFI authentication 
@@ -30,30 +51,6 @@ wpa_key_mgmt=WPA-PSK
 wpa_pairwise=TKIP
 rsn_pairwise=CCMP
 ```
-
-
-5. Prepare DHCP server and DNS service 
-
-``` bash
-# Install **dnsmasq** for DNS, DHCP services
-sudo apt install dnsmasq
-```
-
-``` bash
-# Backup original config
-sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig
-```
-
-```
-# Configure dnsmasq
-# /etc/dnsmasq.conf
-interface=wlan0
-dncp-range=192.168.4.2,192.168.4.20,255.255.255.0,24h
-domain=wlan
-address=/gw.wlan/192.168.4.1                            # Alias for the router
-```
-
-
 
 4.1. Enable ip forwarding
 
