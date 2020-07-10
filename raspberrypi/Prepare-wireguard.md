@@ -65,3 +65,5 @@ sudo iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 1. [Installing and Configuring WireGuard on Raspberry Pi OS (May 2020)](https://www.sigmdel.ca/michel/ha/wireguard/wireguard_02_en.html)
 
 2. [ xuyuji9000/wireguard-playground ](https://github.com/xuyuji9000/wireguard-playground/blob/master/Installation.md)
+
+3. [Use Raspberry Pi as WiFi AP and route traffic through Wireguard (port 53)](https://blog.stigok.com/2019/03/26/raspberry-pi-wifi-ap-wireguard-port-53.html)
