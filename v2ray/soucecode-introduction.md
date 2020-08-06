@@ -379,6 +379,8 @@ func (s *Server) handlePlainHTTP(ctx context.Context, request *http.Request, wri
 
 ## Dispatch origin
 
+### Inbound dispatch
+
 ``` go
 // ./common/mux/server.go
 type Server struct {
@@ -509,6 +511,9 @@ func (d *DefaultDispatcher) getLink(ctx context.Context) (*transport.Link, *tran
 
 ```
 
+
+### Outbound dispatch
+
 ``` go
 // ./app/proxyman/outbound/handler.go
 // Dispatch implements proxy.Outbound.Dispatch.
@@ -531,6 +536,75 @@ func (h *Handler) Dispatch(ctx context.Context, link *transport.Link) {
 }
 ```
 
+``` go
+// ./proxy/vmess/outbound/outbound.go
+
+// ...
+func (v *Handler) Process(ctx context.Context, link *transport.Link, dialer internet.Dialer) error {
+	// ...
+	input := link.Reader
+	output := link.Writer
+	// ...
+
+
+	requestDone := func() error {
+		defer timer.SetTimeout(sessionPolicy.Timeouts.DownlinkOnly)
+
+		writer := buf.NewBufferedWriter(buf.NewWriter(conn))
+		if err := session.EncodeRequestHeader(request, writer); err != nil {
+			return newError("failed to encode request").Base(err).AtWarning()
+		}
+
+		bodyWriter := session.EncodeRequestBody(request, writer)
+
+		// Write request to connection
+		if err := buf.CopyOnceTimeout(input, bodyWriter, time.Millisecond*100); err != nil && err != buf.ErrNotTimeoutReader && err != buf.ErrReadTimeout {
+			return newError("failed to write first payload").Base(err)
+		}
+
+		if err := writer.SetBuffered(false); err != nil {
+			return err
+		}
+
+		if err := buf.Copy(input, bodyWriter, buf.UpdateActivity(timer)); err != nil {
+			return err
+		}
+
+		if request.Option.Has(protocol.RequestOptionChunkStream) {
+			if err := bodyWriter.WriteMultiBuffer(buf.MultiBuffer{}); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	}
+
+	responseDone := func() error {
+		defer timer.SetTimeout(sessionPolicy.Timeouts.UplinkOnly)
+
+		reader := &buf.BufferedReader{Reader: buf.NewReader(conn)}
+		header, err := session.DecodeResponseHeader(reader)
+		if err != nil {
+			return newError("failed to read header").Base(err)
+		}
+		v.handleCommand(rec.Destination(), header.Command)
+
+		bodyReader := session.DecodeResponseBody(request, reader)
+
+		// Put data back through dispatch pipe
+		return buf.Copy(bodyReader, output, buf.UpdateActivity(timer))
+	}
+
+
+	var responseDonePost = task.OnSuccess(responseDone, task.Close(output))
+	if err := task.Run(ctx, requestDone, responseDonePost); err != nil {
+		return newError("connection ends").Base(err)
+	}
+
+	// ...
+}
+// ...
+```
 
 
 
