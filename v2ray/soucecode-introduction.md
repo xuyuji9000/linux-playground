@@ -196,6 +196,344 @@ func (s *Instance) Start() error {
 
 ### Inbound handler initiation
 
+``` go
+// ./app/proxyman/inbound.go
+
+// ...
+func NewHandler(ctx context.Context, config *core.InboundHandlerConfig) (inbound.Handler, error) {
+	// ...
+	allocStrategy := receiverSettings.AllocationStrategy
+	if allocStrategy == nil || allocStrategy.Type == proxyman.AllocationStrategy_Always {
+		return NewAlwaysOnInboundHandler(ctx, tag, receiverSettings, proxySettings)
+	}
+	// ...
+}
+
+```
+
+``` go
+// ./app/proxyman/always.go
+
+// ...
+// Prepare handler with workers attached
+func NewAlwaysOnInboundHandler(ctx context.Context, tag string, receiverConfig *proxyman.ReceiverConfig, proxyConfig interface{}) (*AlwaysOnInboundHandler, error) {
+
+	// ...
+	h := &AlwaysOnInboundHandler{
+		proxy: p,
+		// Prepare dispatcher
+		mux:   mux.NewServer(ctx),
+		tag:   tag,
+	}
+
+	// ...
+	for port := pr.From; port <= pr.To; port++ {
+		if net.HasNetwork(nl, net.Network_TCP) {
+			newError("creating stream worker on ", address, ":", port).AtDebug().WriteToLog()
+
+			worker := &tcpWorker{
+				address:         address,
+				port:            net.Port(port),
+				proxy:           p,
+				stream:          mss,
+				recvOrigDest:    receiverConfig.ReceiveOriginalDestination,
+				tag:             tag,
+
+				// This is will be discussed later, dispatch origin
+				dispatcher:      h.mux,
+				sniffingConfig:  receiverConfig.GetEffectiveSniffingSettings(),
+				uplinkCounter:   uplinkCounter,
+				downlinkCounter: downlinkCounter,
+				ctx:             ctx,
+			}
+			h.workers = append(h.workers, worker)
+		}
+		// ...
+	}
+	// ...
+}
+// ...
+
+// Start all workers when start handler
+func (h *AlwaysOnInboundHandler) Start() error {
+	for _, worker := range h.workers {
+		if err := worker.Start(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+// ...
+```
+
+``` go
+// ./app/proxyman/inbound/worker.go
+
+// ...
+
+func (w *tcpWorker) Start() error {
+	ctx := context.Background()
+
+	// Handle connection from listener with callback()
+	hub, err := internet.ListenTCP(ctx, w.address, w.port, w.stream, func(conn internet.Connection) {
+		go w.callback(conn)
+	})
+	if err != nil {
+		return newError("failed to listen TCP on ", w.port).AtWarning().Base(err)
+	}
+	w.hub = hub
+	return nil
+}
+// ...
+
+func (w *tcpWorker) callback(conn internet.Connection) {
+	// ...
+	// Invoke proxy specific logic to Process connection
+	if err := w.proxy.Process(ctx, net.Network_TCP, conn, w.dispatcher); err != nil {
+		newError("connection ends").Base(err).WriteToLog(session.ExportIDToError(ctx))
+	}
+	// ...
+}
+// ...
+
+```
+
+``` go
+// ./proxy/http/server.go
+
+// ...
+func (s *Server) Process(ctx context.Context, network net.Network, conn internet.Connection, dispatcher routing.Dispatcher) error {
+	// ...
+	err = s.handlePlainHTTP(ctx, request, conn, dest, dispatcher)
+	// ...
+}
+// ...
+
+
+// ...
+func (s *Server) handlePlainHTTP(ctx context.Context, request *http.Request, writer io.Writer, dest net.Destination, dispatcher routing.Dispatcher) error {
+	// ...
+	// Get link, which is used to pass data back and forth with outbound handler
+	link, err := dispatcher.Dispatch(ctx, dest)
+	// ...
+
+	// Write to outbound handler through link.Writer
+	requestDone := func() error {
+		request.Header.Set("Connection", "close")
+
+		requestWriter := buf.NewBufferedWriter(link.Writer)
+		common.Must(requestWriter.SetBuffered(false))
+		if err := request.Write(requestWriter); err != nil {
+			return newError("failed to write whole request").Base(err).AtWarning()
+		}
+		return nil
+	}
+
+	// Read from outbound handler from link.Reader
+	// Write received response to local client
+	responseDone := func() error {
+		responseReader := bufio.NewReaderSize(&buf.BufferedReader{Reader: link.Reader}, buf.Size)
+		response, err := http.ReadResponse(responseReader, request)
+		if err == nil {
+			http_proto.RemoveHopByHopHeaders(response.Header)
+			if response.ContentLength >= 0 {
+				response.Header.Set("Proxy-Connection", "keep-alive")
+				response.Header.Set("Connection", "keep-alive")
+				response.Header.Set("Keep-Alive", "timeout=4")
+				response.Close = false
+			} else {
+				response.Close = true
+				result = nil
+			}
+		} else {
+			newError("failed to read response from ", request.Host).Base(err).AtWarning().WriteToLog(session.ExportIDToError(ctx))
+			response = &http.Response{
+				Status:        "Service Unavailable",
+				StatusCode:    503,
+				Proto:         "HTTP/1.1",
+				ProtoMajor:    1,
+				ProtoMinor:    1,
+				Header:        http.Header(make(map[string][]string)),
+				Body:          nil,
+				ContentLength: 0,
+				Close:         true,
+			}
+			response.Header.Set("Connection", "close")
+			response.Header.Set("Proxy-Connection", "close")
+		}
+		if err := response.Write(writer); err != nil {
+			return newError("failed to write response").Base(err).AtWarning()
+		}
+		return nil
+	}
+
+	// invoke response logic after request logic
+	if err := task.Run(ctx, requestDone, responseDone); err != nil {
+		common.Interrupt(link.Reader)
+		common.Interrupt(link.Writer)
+		return newError("connection ends").Base(err)
+	}
+}
+// ...
+```
+
+## Dispatch origin
+
+``` go
+// ./common/mux/server.go
+type Server struct {
+	dispatcher routing.Dispatcher
+}
+
+// ...
+
+// NewServer creates a new mux.Server.
+// Get dispatch instance stored in context
+func NewServer(ctx context.Context) *Server {
+	s := &Server{}
+	core.RequireFeatures(ctx, func(d routing.Dispatcher) {
+		s.dispatcher = d
+	})
+	return s
+}
+
+// ...
+
+// Dispatch impliments routing.Dispatcher
+func (s *Server) Dispatch(ctx context.Context, dest net.Destination) (*transport.Link, error) {
+	if dest.Address != muxCoolAddress {
+		return s.dispatcher.Dispatch(ctx, dest)
+	}
+	// ...
+}
+
+// ...
+```
+
+
+``` go
+// ./app/dispatcher/default.go
+
+
+// ...
+
+func init() {
+	common.Must(common.RegisterConfig((*Config)(nil), func(ctx context.Context, config interface{}) (interface{}, error) {
+		d := new(DefaultDispatcher)
+		if err := core.RequireFeatures(ctx, func(om outbound.Manager, router routing.Router, pm policy.Manager, sm stats.Manager) error {
+			return d.Init(config.(*Config), om, router, pm, sm)
+		}); err != nil {
+			return nil, err
+		}
+		return d, nil
+	}))
+}
+
+// Init initializes DefaultDispatcher.
+func (d *DefaultDispatcher) Init(config *Config, om outbound.Manager, router routing.Router, pm policy.Manager, sm stats.Manager) error {
+	d.ohm = om
+	d.router = router
+	d.policy = pm
+	d.stats = sm
+	return nil
+}
+// ...
+
+
+// Dispatch implements routing.Dispatcher.
+func (d *DefaultDispatcher) Dispatch(ctx context.Context, destination net.Destination) (*transport.Link, error) {
+	// ...
+	// Prepare link(underlying, they are two pipes)
+	inbound, outbound := d.getLink(ctx)
+	// ...
+	if destination.Network != net.Network_TCP || !sniffingRequest.Enabled {
+		go d.routedDispatch(ctx, outbound, destination)
+	} else {
+		go func() {
+			cReader := &cachedReader{
+				reader: outbound.Reader.(*pipe.Reader),
+			}
+			outbound.Reader = cReader
+			result, err := sniffer(ctx, cReader)
+			if err == nil {
+				content.Protocol = result.Protocol()
+			}
+			if err == nil && shouldOverride(result, sniffingRequest.OverrideDestinationForProtocol) {
+				domain := result.Domain()
+				newError("sniffed domain: ", domain).WriteToLog(session.ExportIDToError(ctx))
+				destination.Address = net.ParseAddress(domain)
+				ob.Target = destination
+			}
+			// outbound link used here
+			d.routedDispatch(ctx, outbound, destination)
+		}()
+	}
+	return inbound, nil
+}
+
+// ...
+func (d *DefaultDispatcher) routedDispatch(ctx context.Context, link *transport.Link, destination net.Destination) {
+	var handler outbound.Handler
+	// ...
+	if handler == nil {
+		handler = d.ohm.GetDefaultHandler()
+	}
+	// ...
+	// Use default outbound handler
+	handler.Dispatch(ctx, link)
+}
+// ...
+
+
+func (d *DefaultDispatcher) getLink(ctx context.Context) (*transport.Link, *transport.Link) {
+	opt := pipe.OptionsFromContext(ctx)
+	uplinkReader, uplinkWriter := pipe.New(opt...)
+	downlinkReader, downlinkWriter := pipe.New(opt...)
+
+	inboundLink := &transport.Link{
+		Reader: downlinkReader,
+		Writer: uplinkWriter,
+	}
+
+	outboundLink := &transport.Link{
+		Reader: uplinkReader,
+		Writer: downlinkWriter,
+	}
+
+	// ...
+
+	return inboundLink, outboundLink
+}
+
+// ...
+
+```
+
+``` go
+// ./app/proxyman/outbound/handler.go
+// Dispatch implements proxy.Outbound.Dispatch.
+func (h *Handler) Dispatch(ctx context.Context, link *transport.Link) {
+	if h.mux != nil && (h.mux.Enabled || session.MuxPreferedFromContext(ctx)) {
+		if err := h.mux.Dispatch(ctx, link); err != nil {
+			newError("failed to process mux outbound traffic").Base(err).WriteToLog(session.ExportIDToError(ctx))
+			common.Interrupt(link.Writer)
+		}
+	} else {
+		if err := h.proxy.Process(ctx, link, h); err != nil {
+			// Ensure outbound ray is properly closed.
+			newError("failed to process outbound traffic").Base(err).WriteToLog(session.ExportIDToError(ctx))
+			common.Interrupt(link.Writer)
+		} else {
+			common.Must(common.Close(link.Writer))
+		}
+		common.Interrupt(link.Reader)
+	}
+}
+```
+
+
+
+
 
 2. Introduce "outbound->Internet->inbound" dataflow
 
