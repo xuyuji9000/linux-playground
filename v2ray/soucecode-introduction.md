@@ -1,3 +1,54 @@
+# Directory Structure
+
+```
+./
+├── app
+│   ├── app.go
+│   ├── commander
+│   │   ├── commander.go
+│   │   ├── config.pb.go
+│   │   ├── config.proto
+│   │   ├── errors.generated.go
+│   │   ├── outbound.go
+│   │   └── service.go
+│   ├── dispatcher
+│   │   ├── config.pb.go
+│   │   ├── config.proto
+│   │   ├── default.go
+│   │   ├── dispatcher.go
+│   │   ├── errors.generated.go
+│   │   ├── sniffer.go
+│   │   ├── stats.go
+│   │   └── stats_test.go
+│   ├── proxyman
+│   │   ├── inbound
+│   │   └── outbound
+├── features
+│   ├── inbound
+│   │   └── inbound.go
+│   ├── outbound
+│   │   └── outbound.go
+├── infra
+│   └── conf
+├── main
+│   ├── json
+│   │   └── config_json.go
+│   └── main.go
+├── proxy
+│   ├── http
+│   │   ├── client.go
+│   │   ├── config.go
+│   │   ├── config.pb.go
+│   │   ├── config.proto
+│   │   ├── errors.generated.go
+│   │   ├── http.go
+│   │   └── server.go
+│   ├── proxy.go
+│   └── vmess
+├── transport
+└── v2ray.go
+```
+
 # Software Initiation 
 
 ``` go
@@ -196,61 +247,6 @@ func (s *Instance) Start() error {
 
 ### Inbound handler initiation
 
-
-```
-./
-├── app
-│   ├── app.go
-│   ├── commander
-│   │   ├── commander.go
-│   │   ├── config.pb.go
-│   │   ├── config.proto
-│   │   ├── errors.generated.go
-│   │   ├── outbound.go
-│   │   └── service.go
-│   ├── dispatcher
-│   │   ├── config.pb.go
-│   │   ├── config.proto
-│   │   ├── default.go
-│   │   ├── dispatcher.go
-│   │   ├── errors.generated.go
-│   │   ├── sniffer.go
-│   │   ├── stats.go
-│   │   └── stats_test.go
-│   ├── proxyman
-│   │   ├── inbound
-│   │   └── outbound
-├── features
-│   ├── inbound
-│   │   └── inbound.go
-│   ├── outbound
-│   │   └── outbound.go
-├── infra
-│   └── conf
-├── main
-│   ├── json
-│   │   └── config_json.go
-│   └── main.go
-├── proxy
-│   ├── http
-│   │   ├── client.go
-│   │   ├── config.go
-│   │   ├── config.pb.go
-│   │   ├── config.proto
-│   │   ├── errors.generated.go
-│   │   ├── http.go
-│   │   └── server.go
-│   ├── proxy.go
-│   └── vmess
-├── transport
-└── v2ray.go
-```
-
-``` go
-
-
-```
-
 ``` go
 // ./app/proxyman/inbound/inbound.go
 
@@ -282,6 +278,7 @@ func NewAlwaysOnInboundHandler(ctx context.Context, tag string, receiverConfig *
 	}
 
 	// ...
+	// Attach a worker to each assigned port 
 	for port := pr.From; port <= pr.To; port++ {
 		if net.HasNetwork(nl, net.Network_TCP) {
 			newError("creating stream worker on ", address, ":", port).AtDebug().WriteToLog()
