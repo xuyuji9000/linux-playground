@@ -429,9 +429,9 @@ func (s *Server) handlePlainHTTP(ctx context.Context, request *http.Request, wri
 // ...
 ```
 
-## Dispatch origin
+### Dispatch 
 
-### Inbound dispatch
+#### Inbound dispatch
 
 ``` go
 // ./common/mux/server.go
@@ -564,7 +564,7 @@ func (d *DefaultDispatcher) getLink(ctx context.Context) (*transport.Link, *tran
 ```
 
 
-### Outbound dispatch
+#### Outbound dispatch
 
 ``` go
 // ./app/proxyman/outbound/handler.go
