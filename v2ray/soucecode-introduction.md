@@ -243,6 +243,8 @@ func (s *Instance) Start() error {
 
 # Dataflow
 
+## Local to Inbound 
+
 ## Intorduce "inbound->dispatch->outbound" dataflow
 
 ### Inbound handler initiation
@@ -665,5 +667,8 @@ func (v *Handler) Process(ctx context.Context, link *transport.Link, dialer inte
 
 
 
+
+
+## Outbound through Internet to Inbound 
 
 # Reference 
