@@ -671,4 +671,188 @@ func (v *Handler) Process(ctx context.Context, link *transport.Link, dialer inte
 
 ## Outbound through Internet to Inbound 
 
+### Register Dialer
+
+``` go
+// ./transport/internet/dialer.go
+
+// ...
+
+// RegisterTransportDialer registers a Dialer with given name.
+func RegisterTransportDialer(protocol string, dialer dialFunc) error {
+	if _, found := transportDialerCache[protocol]; found {
+		return newError(protocol, " dialer already registered").AtError()
+	}
+	transportDialerCache[protocol] = dialer
+	return nil
+}
+// ...
+```
+
+
+``` go
+
+// ./transport/internet/tcp/dialer.go
+
+// Dial dials a new TCP connection to the given destination.
+func Dial(ctx context.Context, dest net.Destination, streamSettings *internet.MemoryStreamConfig) (internet.Connection, error) {
+	newError("dialing TCP to ", dest).WriteToLog(session.ExportIDToError(ctx))
+	conn, err := internet.DialSystem(ctx, dest, streamSettings.SocketSettings)
+	if err != nil {
+		return nil, err
+	}
+
+	if config := tls.ConfigFromStreamSettings(streamSettings); config != nil {
+		tlsConfig := config.GetTLSConfig(tls.WithDestination(dest))
+		if config.IsExperiment8357() {
+			conn = tls.UClient(conn, tlsConfig)
+		} else {
+			conn = tls.Client(conn, tlsConfig)
+		}
+	}
+
+	tcpSettings := streamSettings.ProtocolSettings.(*Config)
+	if tcpSettings.HeaderSettings != nil {
+		headerConfig, err := tcpSettings.HeaderSettings.GetInstance()
+		if err != nil {
+			return nil, newError("failed to get header settings").Base(err).AtError()
+		}
+		auth, err := internet.CreateConnectionAuthenticator(headerConfig)
+		if err != nil {
+			return nil, newError("failed to create header authenticator").Base(err).AtError()
+		}
+		conn = auth.Client(conn)
+	}
+	return internet.Connection(conn), nil
+}
+
+func init() {
+	common.Must(internet.RegisterTransportDialer(protocolName, Dial))
+}
+```
+
+``` go
+
+// ./transport/internet/system_dialer.go
+
+func (d *DefaultSystemDialer) Dial(ctx context.Context, src net.Address, dest net.Destination, sockopt *SocketConfig) (net.Conn, error) {
+	// ...
+
+	dialer := &net.Dialer{
+		Timeout:   time.Second * 16,
+		DualStack: true,
+		LocalAddr: resolveSrcAddr(dest.Network, src),
+	}
+
+	// ...
+	return dialer.DialContext(ctx, dest.Network.SystemString(), dest.NetAddr())
+}
+```
+
+### Get outbound connection
+
+``` go
+// ./proxy/vmess/outbound/outbound.go
+
+func (v *Handler) Process(ctx context.Context, link *transport.Link, dialer internet.Dialer) error {
+	//...
+	var conn internet.Connection
+
+
+	err := retry.ExponentialBackoff(5, 200).On(func() error {
+		rec = v.serverPicker.PickServer()
+		// get conection through dialing remote address
+		rawConn, err := dialer.Dial(ctx, rec.Destination())
+		if err != nil {
+			return err
+		}
+		conn = rawConn
+
+		return nil
+	})
+
+	// ...
+	// write to remote connection
+	requestDone := func() error {
+		// ...
+
+		writer := buf.NewBufferedWriter(buf.NewWriter(conn))
+		
+		// ...
+
+		bodyWriter := session.EncodeRequestBody(request, writer)
+		if err := buf.CopyOnceTimeout(input, bodyWriter, time.Millisecond*100); err != nil && err != buf.ErrNotTimeoutReader && err != buf.ErrReadTimeout {
+			return newError("failed to write first payload").Base(err)
+		}
+
+		if err := writer.SetBuffered(false); err != nil {
+			return err
+		}
+
+		if err := buf.Copy(input, bodyWriter, buf.UpdateActivity(timer)); err != nil {
+			return err
+		}
+
+		if request.Option.Has(protocol.RequestOptionChunkStream) {
+			if err := bodyWriter.WriteMultiBuffer(buf.MultiBuffer{}); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	}
+
+	// Read from remote connection
+	responseDone := func() error {
+		// ...
+
+		reader := &buf.BufferedReader{Reader: buf.NewReader(conn)}
+		header, err := session.DecodeResponseHeader(reader)
+		if err != nil {
+			return newError("failed to read header").Base(err)
+		}
+		v.handleCommand(rec.Destination(), header.Command)
+
+		bodyReader := session.DecodeResponseBody(request, reader)
+
+		return buf.Copy(bodyReader, output, buf.UpdateActivity(timer))
+	}
+}
+
+```
+
+``` go
+// ./app/proxyman/outbound/handler.go
+func (h *Handler) Dial(ctx context.Context, dest net.Destination) (internet.Connection, error) {
+	// ...
+	conn, err := internet.Dial(ctx, dest, h.streamSettings)
+	return h.getStatCouterConnection(conn), err
+}
+```
+
+``` go
+// ./transport/internet/dialer.go
+
+// ...
+func Dial(ctx context.Context, dest net.Destination, streamSettings *MemoryStreamConfig) (Connection, error) {
+	if dest.Network == net.Network_TCP {
+		if streamSettings == nil {
+			s, err := ToMemoryStreamConfig(nil)
+			if err != nil {
+				return nil, newError("failed to create default stream settings").Base(err)
+			}
+			streamSettings = s
+		}
+
+		protocol := streamSettings.ProtocolName
+		dialer := transportDialerCache[protocol]
+		if dialer == nil {
+			return nil, newError(protocol, " dialer not registered").AtError()
+		}
+		return dialer(ctx, dest, streamSettings)
+	}
+	// ...
+}
+```
+
 # Reference 
