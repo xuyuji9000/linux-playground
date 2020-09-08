@@ -4,7 +4,7 @@
 
   - Create a simple log: `echo "simple log"| logger `
 
-  - Check if configuration correct: `rsyslogd /etc/rsyslog.conf -N1`
+  - Check if configuration correct: `rsyslogd -f /etc/rsyslog.conf -N1`
 
 - Pipe typed log to specific file
 
