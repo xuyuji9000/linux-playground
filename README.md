@@ -19,3 +19,6 @@
 
     - [Understanding Linux Network Internals](https://book.douban.com/subject/1475839/)
 
+- Learning Bash
+
+    - [Advanced Bash-Scripting Guide](https://tldp.org/LDP/abs/html/)
