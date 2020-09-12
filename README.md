@@ -7,7 +7,13 @@
     
    And it feels similar to compare reading book and acquire random knowledge. Read book has the advantage of structured knowledge, low maintanence overhead(do need to know how the book structured).
 
-## How to learn Linux 
+## System Calls Examples
+
+- [execve()](./systemcalls/execve/main.c)
+
+  This system call is used for program loading
+
+## References to learn Linux 
 
 - Install linux on Raspberry Pi to have a physical machine to play with
 
