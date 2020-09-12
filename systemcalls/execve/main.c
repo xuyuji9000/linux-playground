@@ -1,4 +1,3 @@
-// Reference      : https://man7.org/linux/man-pages/man2/execve.2.html
 // Build main     : gcc ./main.c -o main
 // Build myecho   : gcc ./myecho.c -o myecho
 // Running command: ./main ./myecho
