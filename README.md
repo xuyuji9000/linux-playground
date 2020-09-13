@@ -23,6 +23,8 @@
 
     - [Understanding the Linux Kernel](https://book.douban.com/subject/1776614/)
 
+      > Reading [Notes](./Understanding_Linux_Kernel)
+
     - [Understanding Linux Network Internals](https://book.douban.com/subject/1475839/)
 
 - Learning Bash
