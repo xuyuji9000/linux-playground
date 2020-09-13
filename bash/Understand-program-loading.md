@@ -16,6 +16,21 @@ This document tries to understand how bash script loads and execution happened a
 
 5. jumping to the program entry point(_start).
 
+## Unsolved problmes
+
+- Understand format used for execution on unix-like systems 
+  This question for executable script is understanding how script runtime interpret the script
+
+- How the program execution context is setup on Linux ?
+
+
+
+
+
+
+
+
+
 # Reference
 
 1. [Loader (computing)](https://en.wikipedia.org/wiki/Loader_(computing))
