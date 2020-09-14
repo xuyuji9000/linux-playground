@@ -1,5 +1,5 @@
 /**
- * Build Command: gcc ./main.c -o main
+ * Build Command: gcc ./simple.c -o simple
  **/
 
 #include <stdio.h>
