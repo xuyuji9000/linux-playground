@@ -16,7 +16,7 @@ This document tries to understand how bash script loads and execution happened a
 
 5. jumping to the program entry point(_start).
 
-# ELF format 
+## ELF format 
 
 ELF's first 4 bytes is magic number.
 
