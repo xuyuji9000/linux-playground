@@ -52,3 +52,5 @@ Bash is represented by file signature `#!`.
 6. [Executable and Linkable Format](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_layout)
 
 7. [List of file signatures](https://en.wikipedia.org/wiki/List_of_file_signatures)
+
+8. [Reverse Engineering | ELF File Format | Beginners](https://www.youtube.com/watch?v=OBDuoqyZ4UA&t=66s)
