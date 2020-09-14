@@ -1,6 +1,6 @@
 # Introduction
 
-This document tries to understand how bash script loads and execution happened at the low level.
+This document tries to understand how bash script loads and execution happened in detail.
 
 ![execve()](./systemcall-execve.png)
 
