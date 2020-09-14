@@ -16,6 +16,12 @@ This document tries to understand how bash script loads and execution happened a
 
 5. jumping to the program entry point(_start).
 
+# ELF format 
+
+ELF's first 4 bytes is magic number.
+
+Bash is represented by file signature `#!`.
+
 ## Unsolved problmes
 
 - Understand format used for execution on unix-like systems 
@@ -42,3 +48,7 @@ This document tries to understand how bash script loads and execution happened a
 4. [execve(2) — Linux manual page](https://man7.org/linux/man-pages/man2/execve.2.html)
 
 5. [Unix/Linux Loader Process](https://unix.stackexchange.com/questions/50335/unix-linux-loader-process#answer-50346)
+
+6. [Executable and Linkable Format](https://en.wikipedia.org/wiki/Executable_and_Linkable_Format#File_layout)
+
+7. [List of file signatures](https://en.wikipedia.org/wiki/List_of_file_signatures)
