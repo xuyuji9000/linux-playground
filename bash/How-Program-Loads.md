@@ -29,6 +29,10 @@ Bash is represented by file signature `#!`.
 - Understand format used for execution on unix-like systems 
   This question for executable script is understanding how script runtime interpret the script
 
+- What is execution context like?
+
+- How execution context is setup based on executable file?
+
 - How the program execution context is setup on Linux ?
 
 
