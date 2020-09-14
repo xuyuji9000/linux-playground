@@ -24,6 +24,8 @@ Bash is represented by file signature `#!`.
 
 ## Unsolved problmes
 
+- What happens when I execute a command in shell?
+
 - Understand format used for execution on unix-like systems 
   This question for executable script is understanding how script runtime interpret the script
 
