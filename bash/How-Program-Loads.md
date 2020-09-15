@@ -63,3 +63,5 @@ Bash is represented by file signature `#!`.
 8. [Reverse Engineering | ELF File Format | Beginners](https://www.youtube.com/watch?v=OBDuoqyZ4UA&t=66s)
 
 9. [Understanding the Linux Kernel / Chapter 3 Processes / Create Processes](https://doc.lagout.org/operating%20system%20/linux/Understanding%20Linux%20Kernel.pdf)
+
+10. [Shebang (Unix)](https://en.wikipedia.org/wiki/Shebang_(Unix))
