@@ -35,6 +35,8 @@ Bash is represented by file signature `#!`.
 
 - How the program execution context is setup on Linux ?
 
+- What happens with shell initiation itself?
+
 
 
 
