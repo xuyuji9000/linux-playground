@@ -55,3 +55,5 @@ int main()
 3. [Mach-O](https://en.wikipedia.org/wiki/Mach-O)
 
     MacOS is using its own object format `Mach-O`
+
+4. [Understanding the ELF File Format](https://linuxhint.com/understanding_elf_file_format/)
