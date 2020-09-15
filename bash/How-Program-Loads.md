@@ -25,24 +25,15 @@ Bash is represented by file signature `#!`.
 
 ## Unsolved problmes
 
-- What happens when I execute a command in shell?
+- Understand ELF format
 
-- Understand format used for execution on unix-like systems 
-  This question for executable script is understanding how script runtime interpret the script
-
-- What is execution context like?
+- What does execution context contains?
 
 - How execution context is setup based on executable file?
 
-- How the program execution context is setup on Linux ?
+  - How process memory is initiated based on ELF format?
 
-- What happens with shell initiation itself?
-
-
-
-
-
-
+- What happens with interactive shell initiation itself? Like how the environment variables is first iniated, etc.
 
 
 
