@@ -4,17 +4,16 @@ This document tries to understand how bash script loads and execution happened i
 
 ![execve()](./systemcall-execve.png)
 
-## What does Unix loader do?
+## Steps involed in executing a bash script 
 
-1. validation(permission, memory requirements etc.);
+1. Shell itself is a process, new command execute within the context of shell
 
-2. copying the program image from the disk into main memory;
+2. fork() get a PID with everything else stays the same
 
-3. copying the command-line arguments oon the stack;
+3. execve() keeps the new PID, clean the other state up(stack, program user space, etc)
 
-4. initializing registers(e.g. the stack pointer);
+4. Kernel hand control back to user space program
 
-5. jumping to the program entry point(_start).
 
 ## ELF format 
 
