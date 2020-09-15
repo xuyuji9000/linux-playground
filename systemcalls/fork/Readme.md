@@ -4,9 +4,9 @@
 
   Use `fork()` system call in the simplest form.
 
-- With execve example
+- With execv example
 
-  Use `fork()` together with `execve()`.
+  Use `fork()` together with `execv()`.
 
 
 # Reference 
