@@ -1,6 +1,6 @@
 # Introduction
 
-This document tries to understand how bash script loads and execution happened in detail.
+This document tries to understand how bash script loading and execution happened in detail.
 
 ![execve()](./systemcall-execve.png)
 
@@ -8,11 +8,13 @@ This document tries to understand how bash script loads and execution happened i
 
 1. Shell itself is a process, new command execute within the context of shell
 
-2. fork() get a PID with everything else stays the same
+2. Format interpretation based on ELF format
 
-3. execve() keeps the new PID, clean the other state up(stack, program user space, etc)
+3. fork() get a PID with everything else stays the same
 
-4. Kernel hand control back to user space program
+4. execve() keeps the new PID, clean the other state up(stack, program user space, etc)
+
+5. Kernel hand control back to user space program
 
 
 ## ELF format 
