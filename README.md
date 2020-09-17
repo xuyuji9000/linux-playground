@@ -1,11 +1,18 @@
 # linux-playground
 
+## Approaches of learning 
 
-- Q: Why using Linux?
+- Derive questions from execution, and try to find a answer to the question.
 
-  A: Delegate my needs to a maintained stable base(like a book), then I only need to worry about the new things that are not maintained and how to read the book.
-    
-   And it feels similar to compare reading book and acquire random knowledge. Read book has the advantage of structured knowledge, low maintanence overhead(do need to know how the book structured).
+Q: What is the boundry of digging into one topic?
+
+A: Do not have a clear answer yet, but do need some process to regulate, so I can have a better use of time.
+
+  - Dig one level deeper to answer the problem
+
+  - For questions deeper than the immediate lower level, understand the concepts and let go. 
+
+    > The reasoning here is that, there is no repeated environment to sustain the knowledge.
 
 ## System Calls Examples
 
