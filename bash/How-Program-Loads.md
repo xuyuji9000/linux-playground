@@ -27,6 +27,8 @@ Bash is represented by file signature `#!`.
 
 - Understand ELF format
 
+  - How does this format support loading into memory?
+
 - What does execution context contains?
 
 - How execution context is setup based on executable file?
