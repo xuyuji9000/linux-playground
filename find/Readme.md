@@ -1,4 +1,4 @@
-This document contains examples related to `find` command.
+This document contains examples related to `find`[2] command.
 
 
 - List file with specific extensions[1]
@@ -18,3 +18,4 @@ This document contains examples related to `find` command.
 
 1. [How to use find command to find all files with extensions from list?](https://stackoverflow.com/questions/2621513/how-to-use-find-command-to-find-all-files-with-extensions-from-list)
 
+2. [find(1) — Linux manual page](https://man7.org/linux/man-pages/man1/find.1.html)
