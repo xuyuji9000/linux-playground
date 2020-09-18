@@ -35,3 +35,10 @@ case $key in
   ;;
 esac
 done
+
+if test -z "${ARG1}"
+then 
+  echo "\$ARG1 is empty"
+  usage
+  exit 1
+fi
