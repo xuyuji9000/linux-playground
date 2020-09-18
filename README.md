@@ -4,13 +4,13 @@
 
 - Derive questions from execution, and try to find a answer to the question.
 
-Q: What is the boundry of digging into one topic?
+  Q: What is the boundry of digging into one topic?
 
-A: Do not have a clear answer yet, but do need some process to regulate, so I can have a better use of time.
+  A: Do not have a clear answer yet, accumulated following steps for use for now:
 
-  - Dig one level deeper to answer the problem
+    - Dig one level deeper to answer concerned topic
 
-  - For questions deeper than the immediate lower level, understand the concepts and let go. 
+    - For questions deeper than the immediate lower level, understand the concepts and let go. 
 
     > The reasoning here is that, there is no repeated environment to sustain the knowledge.
 
