@@ -5,6 +5,8 @@ This document contains examples related to `find`[2] command.
 
   `find . -iname *.md`
 
+  > `.` represent current directory, absolute path start with `/` can also be used here.
+
 - Execute command on found files
 
   `find . -iname *.md  -exec ls -lh {} \;`
@@ -12,6 +14,12 @@ This document contains examples related to `find`[2] command.
   > `{}` is replaced by the current filename being processed
   
   > `\;` is indicating the end of the command executed on the filename
+
+- Execute command when pipe feature is needed
+
+  `find . -iname *.md | xargs -I % sh -c '{ ls % | wc -l;}'`
+
+  > `xargs`'s `-I` parameter specifies the string to be replaced.
 
 
 # Reference
