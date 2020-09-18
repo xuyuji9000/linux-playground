@@ -5,6 +5,14 @@ This document contains examples related to `find` command.
 
   `find . -iname *.md`
 
+- Execute command on found files
+
+  `find . -iname *.md  -exec ls -lh {} \;`
+
+  > `{}` is replaced by the current filename being processed
+  
+  > `\;` is indicating the end of the command executed on the filename
+
 
 # Reference
 
