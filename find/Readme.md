@@ -19,7 +19,7 @@ This document contains examples related to `find`[2] command.
 
   `find . -iname *.md | xargs -I % sh -c '{ ls % | wc -l;}'`
 
-  > `xargs`'s `-I` parameter specifies the string to be replaced.
+  > `xargs`'s `-I` parameter specifies the string to be replaced[3][4]
 
 
 # Reference
@@ -27,3 +27,7 @@ This document contains examples related to `find`[2] command.
 1. [How to use find command to find all files with extensions from list?](https://stackoverflow.com/questions/2621513/how-to-use-find-command-to-find-all-files-with-extensions-from-list)
 
 2. [find(1) — Linux manual page](https://man7.org/linux/man-pages/man1/find.1.html)
+
+3. [Xargs Command in Linux](https://linuxize.com/post/linux-xargs-command/)
+
+4. [xargs(1) — Linux manual page](https://man7.org/linux/man-pages/man1/xargs.1.html)
