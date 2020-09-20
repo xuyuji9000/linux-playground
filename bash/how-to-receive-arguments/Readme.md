@@ -24,6 +24,17 @@
 
     > `$@`[5] holds all positional arguments passsed to the function
 
+- Arguement validation in one line 
+
+    ``` bash
+    die() {
+        echo "$@"
+        exit 1
+    }
+
+    test -z "${ARGUMENT}" && die "\$ARGUMENT is empty"
+    ```
+
 
 # Reference 
 
