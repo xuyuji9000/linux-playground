@@ -40,16 +40,15 @@ lvmdiskscan
 
 
 
-## Extend filesystem on logical volume[4]
+## Extend filesystem on logical volume[4][5]
 
-1. Extend logical volume size: `lvextend --extents +1279 /dev/vg01/lvol01`
+1. Resize physical volume: `pvresize /dev/vdc`
 
-2. Extend file system: `resize2fs /dev/vg01/lvol01`
+2. Extend logical volume size: `lvextend --extents +1279 /dev/vg01/lvol01`
+
+3. Extend file system: `resize2fs /dev/vg01/lvol01`
 
 
-## Extend physical volume[5]
-
-> This process will involve delete partition table and create a new one in place has serious risk of lossing data not recommended.
 
 
 # Reference
