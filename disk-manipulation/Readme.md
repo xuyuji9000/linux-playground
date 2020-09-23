@@ -11,13 +11,32 @@ lvmdiskscan
 
 - List disk devices: `lvmdiskscan`
 
-## Create a logic volume from ground up[3]
+## Create file system on top of logical volume[3]
 
 1. Initialize physical volume: `pvcreate /dev/DEVICE_NAME`
 
 2. Create volume group: `vgcreate vg01 /dev/DEVICE_NAME`
 
 3. Create logical volume: `lvcreate --size 5G --name lvol01 vg01`
+
+4. Create a ext4 file system: `mkfs.ext4 /dev/vg01/lvol01`
+
+5. Mount:
+
+    ``` bash
+    mkdir /data01
+    mount /dev/vg01/lvol01 /data01
+    ```
+6. Add an entry to `/etc/fstab` for automatic mouting
+
+    ```
+    # vi /etc/fstab
+    UUID=PoWVAi-pwGx-jzhc-VdTr-jVn0-GQOt-eEWInz /data01                       ext4	defaults	0 0
+    /dev/vg01/lvol01	/data01			ext4	defaults	0 0
+    ```
+
+    > Get UUID information `blkid /dev/vg01/lvol01`
+
 
 # Reference
 
