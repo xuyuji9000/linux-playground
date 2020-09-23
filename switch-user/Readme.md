@@ -1,1 +1,0 @@
-- switch to another user: `sudo su - ANOTHER_USER`

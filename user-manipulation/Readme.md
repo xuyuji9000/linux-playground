@@ -9,3 +9,8 @@ useradd:
 usermod:
 
 - Change user home directory: `usermod --home /TARGET/DIRECTORY USERNAME`
+
+
+su: 
+
+- switch to another user: `sudo su - ANOTHER_USER`
