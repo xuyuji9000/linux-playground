@@ -47,7 +47,9 @@ lvmdiskscan
 2. Extend file system: `resize2fs /dev/vg01/lvol01`
 
 
+## Extend physical volume[5]
 
+> This process will involve delete partition table and create a new one in place has serious risk of lossing data not recommended.
 
 
 # Reference
@@ -59,3 +61,6 @@ lvmdiskscan
 3. [Beginner’s Guide to LVM (Logical Volume Management)](https://www.thegeekdiary.com/redhat-centos-a-beginners-guide-to-lvm-logical-volume-manager/)
 
 4. [How to Extend/Reduce LVM’s (Logical Volume Management) in Linux – Part II](https://www.tecmint.com/extend-and-reduce-lvms-in-linux/)
+
+5. [CentOS / RHEL : How to extend Physical Volume in LVM by extending the Disk Partition used](https://www.thegeekdiary.com/centos-rhel-how-to-extend-physical-volume-in-lvm-by-extending-the-disk-partition-used/)
+
