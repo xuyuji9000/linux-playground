@@ -10,7 +10,11 @@ usermod:
 
 - Change user home directory: `usermod --home /TARGET/DIRECTORY USERNAME`
 
+- Disable user login: `usermod --shell /sbin/nologin USERNAME`
+
 
 su: 
 
 - switch to another user: `sudo su - ANOTHER_USER`
+
+
