@@ -46,6 +46,8 @@ lvmdiskscan
 
 2. Extend logical volume size: `lvextend --extents +1279 /dev/vg01/lvol01`
 
+   > Get available free PE number with `vgdisplay` 
+
 3. Extend file system: `resize2fs /dev/vg01/lvol01`
 
 
