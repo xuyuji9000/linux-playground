@@ -18,3 +18,6 @@ su:
 - switch to another user: `sudo su - ANOTHER_USER`
 
 
+userdel: 
+
+- Delete user: `userdel USERNAME`
