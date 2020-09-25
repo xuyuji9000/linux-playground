@@ -36,7 +36,7 @@
 
 - Learning Bash
 
-    - [Advanced Bash-Scripting Guide](https://tldp.org/LDP/abs/html/)
+    - [Advanced Bash-Scripting Guide](https://tldp.org/LDP/abs/abs-guide.pdf)
 
     - [How Program Loads](./bash/How-Program-Loads.md)
     
