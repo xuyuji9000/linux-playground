@@ -50,6 +50,19 @@ lvmdiskscan
 
 3. Extend file system: `resize2fs /dev/vg01/lvol01`
 
+## Recover lvm from a backed up disk
+
+1. Deactivate logical volumes: `vgchange -a n vg01`
+
+    > Check if logical volume is still active: `lvdisplay`
+
+2. Unmount filesystem: `umount /dev/vg01/lvol01`
+
+3. Remove damaged hard disk
+
+4. Insert backed up hard disk
+
+5. Check filesystem `df -h` and logical volume `lvdisplay` status
 
 
 
