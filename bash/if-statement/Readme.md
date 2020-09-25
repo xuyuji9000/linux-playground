@@ -10,5 +10,7 @@ This document introduce `if-statement` examples.
     fi
     ```
 
+    > `-z` True if the length of string is zero
+
     > `${VARIABLE_NAME}` needs to be wrapped inside **double quote**, so when `${VARIABLE_NAME}` value is empty, there will still be an empty string.
 
