@@ -38,6 +38,8 @@
 
     - [Advanced Bash-Scripting Guide](https://tldp.org/LDP/abs/abs-guide.pdf)
 
+    - [Bash Reference Manual](https://www.gnu.org/software/bash/manual/html_node/index.html#Top)
+
     - [How Program Loads](./bash/How-Program-Loads.md)
     
     - [ELF format](./ELF_format/Readme.md)
