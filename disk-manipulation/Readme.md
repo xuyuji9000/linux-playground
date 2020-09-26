@@ -64,6 +64,8 @@ lvmdiskscan
 
 5. Check filesystem `df -h` and logical volume `lvdisplay` status
 
+## Resize a partition[6]
+
 
 
 # Reference
@@ -78,3 +80,4 @@ lvmdiskscan
 
 5. [CentOS / RHEL : How to extend Physical Volume in LVM by extending the Disk Partition used](https://www.thegeekdiary.com/centos-rhel-how-to-extend-physical-volume-in-lvm-by-extending-the-disk-partition-used/)
 
+6. [How to Resize a Partition using fdisk](https://access.redhat.com/articles/1190213)
