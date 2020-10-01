@@ -48,3 +48,4 @@
 
     - [An introduction to Linux filesystems](https://opensource.com/life/16/10/introduction-linux-filesystems)
 
+- [Linux kernel coding style](https://www.kernel.org/doc/html/v4.16/process/coding-style.html)
