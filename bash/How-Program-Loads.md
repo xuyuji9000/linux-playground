@@ -62,3 +62,5 @@ Bash is represented by file signature `#!`.
 10. [Shebang (Unix)](https://en.wikipedia.org/wiki/Shebang_(Unix))
 
 11. [Understanding the Linux Kernel / Chapter 9 Process Address Space ](https://doc.lagout.org/operating%20system%20/linux/Understanding%20Linux%20Kernel.pdf)
+
+12. [How programs get run](https://lwn.net/Articles/630727/)
