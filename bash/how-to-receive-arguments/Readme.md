@@ -2,16 +2,16 @@
 
 
     ``` bash
-    if test -z "${ARGUMENT}"
-    then 
-    echo "\$ARGUMENT is empty"
-    exit 1
+    if [ -z "${ARGUMENT}" ] ; then 
+        echo "\${ARGUMENT} is empty"
+        exit 1
     fi
     ```
 
-    > `test`[3] evaluates a conditional expression
+    > `-z` True if the length of string is zero
 
-    > `test -z String` is True if the length of String is zero
+    > `${ARGUMENT}` needs to be wrapped inside **double quote**, so when `${ARGUMENT}` value is empty, there will still be an empty string.
+
 
 - Absract `die` function[4]
 
@@ -34,6 +34,10 @@
 
     test -z "${ARGUMENT}" && die "\$ARGUMENT is empty"
     ```
+
+    > `test`[3] evaluates a conditional expression
+
+    > `test -z String` is True if the length of String is zero
 
 
 # Reference 

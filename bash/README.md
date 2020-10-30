@@ -1,10 +1,5 @@
-This project demonstrates bash syntax.
+This folder demonstrates bash syntax.
 
+- **./how-to-receive-arguments**
 
-- if-statement.sh
-
-    Bash `if` statement syntax.
-
-- arguments.sh
-
-    Utilize `getopts` syntax.
+  > Here explains a way to receive arguments for bash scripts.
