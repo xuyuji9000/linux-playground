@@ -1,3 +1,11 @@
+- Prepare a machine at Google Cloud Taiwan Region
+
+    Machine Size: f1-micro
+
+    OS: Ubuntu 20.04 LTS
+
+
+
 
 # Operation commands
 
