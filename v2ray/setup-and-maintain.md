@@ -4,7 +4,7 @@
 
     OS: Ubuntu 20.04 LTS
 
-
+- Download V2ray from here[2]
 
 
 # Operation commands
@@ -31,3 +31,5 @@ acme.sh --renew \
 # Reference 
 
 1. [ WebSocket + TLS + Web](https://guide.v2fly.org/advanced/wss_and_web.html)
+
+2. [v2fly/v2ray-core releases](https://github.com/v2fly/v2ray-core/releases)
