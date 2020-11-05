@@ -6,6 +6,12 @@
 
 - Download V2ray from here[2]
 
+- Installation commands
+
+  ``` bash
+  wget https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh
+  sudo bash ./install-release.sh
+  ```
 
 # Operation commands
 
