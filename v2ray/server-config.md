@@ -11,7 +11,20 @@
   ``` bash
   wget https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh
   sudo bash ./install-release.sh
+
+  # Related files
+  #installed: /usr/local/bin/v2ray
+  #installed: /usr/local/bin/v2ctl
+  #installed: /usr/local/share/v2ray/geoip.dat
+  #installed: /usr/local/share/v2ray/geosite.dat
+  #installed: /usr/local/etc/v2ray/config.json
+  #installed: /var/log/v2ray/
+  #installed: /var/log/v2ray/access.log
+  #installed: /var/log/v2ray/error.log
+  #installed: /etc/systemd/system/v2ray.service
+  #installed: /etc/systemd/system/v2ray@.service
   ```
+
 
 - Configuration examples[4]
 
@@ -19,25 +32,23 @@
   
   > Generate uuid: `v2ctl uuid`
 
-# Operation commands
+- Prepare TLS certificate
 
-- generate domain name: 
-
-``` bash
-acme.sh --install-cert -d DOMAINNAME  \
---ecc \
---key-file /etc/v2ray/v2ray.key \
---fullchain-file /etc/v2ray/v2ray.crt \
---reloadcmd     "service nginx force-reload"
-```
+  ``` bash
+  acme.sh --install-cert -d DOMAINNAME  \
+  --ecc \
+  --key-file /usr/local/etc/v2ray/v2ray.key \
+  --fullchain-file /usr/local/etc/v2ray/v2ray.crt \
+  --reloadcmd     "service nginx force-reload"
+  ```
 
 - renew certificate: 
 
-``` bash
-acme.sh --renew \
--d DOMAINNAME \
---ecc
-```
+  ``` bash
+  acme.sh --renew \
+  -d DOMAINNAME \
+  --ecc
+  ```
 
 
 # Reference 
