@@ -33,8 +33,12 @@ Distribution: **Ubuntu 20.04**
 
   > `btrfs filesystem defrag -v -r -f -czlib dir/`
 
+  > How to know compressed file size[3]
+
 # Reference
 
 1. [Property Listings for 5 South American Countries](https://www.kaggle.com/rmjacobsen/property-listings-for-5-south-american-countries?select=uy_properties.csv)
 
 2. [Arch Linux / Btrfs / Compression](https://wiki.archlinux.org/index.php/btrfs#Compression)
+
+3. [Btrfs / Compression / How_can_I_determine_compressed_size_of_a_file](https://btrfs.wiki.kernel.org/index.php/Compression#How_can_I_determine_compressed_size_of_a_file.3F)
