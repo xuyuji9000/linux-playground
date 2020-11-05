@@ -32,9 +32,15 @@
   
   > Generate uuid: `v2ctl uuid`
 
-- Prepare TLS certificate
+- Prepare TLS certificate[5]
 
   ``` bash
+  # Issue certificate
+  # - Need configure DNS to current server public IP
+  # - Use `sudo su` to get root permission
+  acme.sh --issue -d DOMAINNAME --standalone
+
+
   acme.sh --install-cert -d DOMAINNAME  \
   --ecc \
   --key-file /usr/local/etc/v2ray/v2ray.key \
@@ -62,3 +68,5 @@
 
 
 4. [v2fly/v2ray-examples](https://github.com/v2fly/v2ray-examples)
+
+5. [acmesh-official/acme.sh](https://github.com/acmesh-official/acme.sh)
