@@ -1,13 +1,15 @@
 This folder stores learning of using btrfs.
 
 
+
+# Prepare btrfs
 Distribution: **Ubuntu 20.04**
 
 - Installation: `apt install btrfs-progs`
 
 - Create a Btrfs file system: `mkfs.btrfs /dev/DISK-NAME`
 
-  > Use `lsblk` to get disk name
+  > Use `lsblk --fs --paths` to get disk name
 
 - Mount: `mount /dev/DISK-NAME /srv`
 
@@ -22,3 +24,11 @@ Distribution: **Ubuntu 20.04**
 
   > Get block device UUID: `blkid /dev/DISK-NAME`
 
+# Try out transparent compression
+
+
+- Test dataset[1]
+
+# Reference
+
+1. [Property Listings for 5 South American Countries](https://www.kaggle.com/rmjacobsen/property-listings-for-5-south-american-countries?select=uy_properties.csv)
