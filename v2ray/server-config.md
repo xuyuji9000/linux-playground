@@ -6,12 +6,18 @@
 
 - Download V2ray from here[2]
 
-- Installation commands
+- Installation commands[3]
 
   ``` bash
   wget https://raw.githubusercontent.com/v2fly/fhs-install-v2ray/master/install-release.sh
   sudo bash ./install-release.sh
   ```
+
+- Configuration examples[4]
+
+  Get configuration file scaffold and configure parameters.
+  
+  > Generate uuid: `v2ctl uuid`
 
 # Operation commands
 
@@ -39,3 +45,9 @@ acme.sh --renew \
 1. [ WebSocket + TLS + Web](https://guide.v2fly.org/advanced/wss_and_web.html)
 
 2. [v2fly/v2ray-core releases](https://github.com/v2fly/v2ray-core/releases)
+
+
+3. [v2fly/fhs-install-v2ray](https://github.com/v2fly/fhs-install-v2ray)
+
+
+4. [v2fly/v2ray-examples](https://github.com/v2fly/v2ray-examples)
