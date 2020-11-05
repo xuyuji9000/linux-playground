@@ -38,15 +38,20 @@
   # Issue certificate
   # - Need configure DNS to current server public IP
   # - Use `sudo su` to get root permission
-  acme.sh --issue -d DOMAINNAME --standalone
+  acme.sh --issue \
+          --domain DOMAINNAME \
+          --standalone
 
 
-  acme.sh --install-cert -d DOMAINNAME  \
-  --ecc \
-  --key-file /usr/local/etc/v2ray/v2ray.key \
-  --fullchain-file /usr/local/etc/v2ray/v2ray.crt \
-  --reloadcmd     "service nginx force-reload"
+  # Install certificate
+  acme.sh --install-cert \
+          --domain DOMAINNAME \ 
+          --cert-file /usr/local/etc/v2ray/DOMAINNAME/cert.pem \
+          --key-file /usr/local/etc/v2ray/DOMAINNAME/key.pem \
+          --fullchain-file /usr/local/etc/v2ray/DOMAINNAME/fullchain.pem \
   ```
+
+  > Certificate original location: `/root/.acme.sh/DOMAIN_NAME`
 
 - renew certificate: 
 
