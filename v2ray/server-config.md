@@ -25,13 +25,6 @@
   #installed: /etc/systemd/system/v2ray@.service
   ```
 
-
-- Configuration examples[4]
-
-  Get configuration file scaffold and configure parameters.
-  
-  > Generate uuid: `v2ctl uuid`
-
 - Prepare TLS certificate[5]
 
   ``` bash
@@ -59,6 +52,91 @@
   acme.sh --renew \
   -d DOMAINNAME \
   --ecc
+  ```
+
+
+- Prepare configuration [4]
+
+  Get configuration file scaffold and configure parameters.
+  
+  > Generate uuid: `v2ctl uuid`
+
+
+  ```
+  {
+    "log": {
+        "loglevel": "warning"
+    },
+    "inbounds": [
+        {
+            "port": 443,
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "UUID", // 填写你的 UUID
+                        "level": 0,
+                        "email": "Your Email"
+                    }
+                ],
+                "decryption": "none",
+                "fallbacks": [
+                    {
+                        "dest": 80
+                    },
+                    {
+                        "path": "/websocket", // 必须换成自定义的 PATH
+                        "dest": 1234,
+                        "xver": 1
+                    }
+                ]
+            },
+            "streamSettings": {
+                "network": "tcp",
+                "security": "tls",
+                "tlsSettings": {
+                    "alpn": [
+                        "http/1.1"
+                    ],
+                    "certificates": [
+                        {
+                            "certificateFile": "/pth/to/fullchain.pem", // 换成你的证书，绝对路径
+                            "keyFile": "/path/to/key.pem" // 换成你的私钥，绝对路径
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "port": 1234,
+            "listen": "127.0.0.1",
+            "protocol": "vless",
+            "settings": {
+                "clients": [
+                    {
+                        "id": "UUID", // 填写你的 UUID
+                        "level": 0,
+                        "email": "Your Email"
+                    }
+                ],
+                "decryption": "none"
+            },
+            "streamSettings": {
+                "network": "ws",
+                "security": "none",
+                "wsSettings": {
+                    "acceptProxyProtocol": true, // 提醒：若你用 Nginx/Caddy 等反代 WS，需要删掉这行
+                    "path": "/websocket" // 必须换成自定义的 PATH，需要和上面的一致
+                }
+            }
+        }
+    ],
+    "outbounds": [
+        {
+            "protocol": "freedom"
+        }
+    ]
+}
   ```
 
 
