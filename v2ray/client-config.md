@@ -1,5 +1,17 @@
 - Machine: MacOS
 
+- Installation[1]
+
+    ``` bash
+    brew tap v2ray/v2ray
+
+    brew install v2ray-core
+
+    # update config.json
+
+    brew services start v2ray-core
+    ```
+
 
 - Configuration example
 
@@ -48,3 +60,7 @@
     ]
 }
 ```
+
+# Reference
+
+1. [v2ray/homebrew-v2ray](https://github.com/v2ray/homebrew-v2ray)
