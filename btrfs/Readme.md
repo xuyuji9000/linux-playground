@@ -24,11 +24,17 @@ Distribution: **Ubuntu 20.04**
 
   > Get block device UUID: `blkid /dev/DISK-NAME`
 
-# Try out transparent compression
+# Try out transparent compression[2]
 
 
 - Test dataset[1]
 
+- Compression
+
+  > `btrfs filesystem defrag -v -r -f -czlib dir/`
+
 # Reference
 
 1. [Property Listings for 5 South American Countries](https://www.kaggle.com/rmjacobsen/property-listings-for-5-south-american-countries?select=uy_properties.csv)
+
+2. [Arch Linux / Btrfs / Compression](https://wiki.archlinux.org/index.php/btrfs#Compression)
