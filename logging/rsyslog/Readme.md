@@ -10,6 +10,8 @@
 
 - rotate log
 
+- Present log with a UI
+
 
 # Reference
 
