@@ -8,15 +8,29 @@
 
   - Check if configuration correct: `rsyslogd -f /etc/rsyslog.conf -N1`
 
-- Filter log
+- Filter log [3][4]
 
-    > Filter message with tag and save the message to file with tag in the filename.
+    - Syntax
+      
+      ```
+      :[Available Properties], [compare-operations], [customized expression] [path/log file]
+      ```
+    
+    - Example
+
+      ```
+      :programname, isequal, "application-1" /var/log/application-1.log
+      ```
+
+      > programname is the “static” part of the tag[4]
+
+      > Check if configuration is correct `rsyslogd -f /etc/rsyslog.conf -N1`
 
     - Prepare testing message
 
       ``` bash
       # Create a message with tag
-      echo "hell world" | logger -i -t hello-world
+      echo "hell world" | logger -i --tag application-1
       ```
 
 - rotate log
@@ -36,3 +50,7 @@
 
 
 2. [how to filter rsyslog messages by tags](https://serverfault.com/questions/514901/how-to-filter-rsyslog-messages-by-tags)
+
+3. [Filter Conditions](https://www.rsyslog.com/doc/master/configuration/filters.html)
+
+4. [rsyslog Properties](https://www.rsyslog.com/doc/master/configuration/properties.html)
