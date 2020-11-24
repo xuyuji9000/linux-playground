@@ -1,3 +1,5 @@
+# Steps
+
 - Install rsyslog on CentOS
 
   - Default log location: `/var/log/messages`
@@ -6,11 +8,26 @@
 
   - Check if configuration correct: `rsyslogd -f /etc/rsyslog.conf -N1`
 
-- Pipe typed log to specific file
+- Filter log
+
+    > Filter message with tag and save the message to file with tag in the filename.
+
+    - Prepare testing message
+
+      ``` bash
+      # Create a message with tag
+      echo "hell world" | logger -i -t hello-world
+      ```
 
 - rotate log
 
 - Present log with a UI
+
+
+# Architecture
+
+
+![logging architecture](./logging-architecture.png)
 
 
 # Reference
