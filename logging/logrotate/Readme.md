@@ -6,6 +6,8 @@ This document give an example of using logrotate[1].
 
 - cron configuration location: `/etc/cron.daily/logrotate`
 
+- Force running:  ` logrotate --force CONFIG_FILE`
+
 
 
 # Reference
