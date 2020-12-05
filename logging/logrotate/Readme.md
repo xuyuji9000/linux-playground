@@ -13,3 +13,8 @@ This document give an example of using logrotate[1].
 # Reference
 
 1. [logrotate(8) - Linux man page](https://linux.die.net/man/8/logrotate)
+
+
+2. [HowTo: The Ultimate Logrotate Command Tutorial with 10 Examples](https://www.thegeekstuff.com/2010/07/logrotate-examples/)
+
+    > This article provides examples for reference.
