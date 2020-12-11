@@ -14,3 +14,7 @@ This folder demonstrates bash syntax.
 3. [The Bourne-Again Shell](https://www.aosabook.org/en/bash.html)
 
     > This article introduces the architecture of Bash
+
+4. [Shell & Utilities](https://pubs.opengroup.org/onlinepubs/9699919799/)
+
+    > Refer this for POSIX specification
