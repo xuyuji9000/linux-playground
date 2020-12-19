@@ -20,4 +20,4 @@ This folder is responsible for explaining shell unit testing.
 
 2. [Unit Testing Shell Scripts:Part One](https://www.leadingagile.com/2018/10/unit-testing-shell-scriptspart-one/)
 
-    > Mocking df command for test case
+    > Mocking `df` command for test case
