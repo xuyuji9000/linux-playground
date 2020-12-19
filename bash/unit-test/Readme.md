@@ -17,3 +17,7 @@ This folder is responsible for explaining shell unit testing.
 1. [ kward / shunit2 ](https://github.com/kward/shunit2#introduction)
 
     > Get `shunit2` source code from here.
+
+2. [Unit Testing Shell Scripts:Part One](https://www.leadingagile.com/2018/10/unit-testing-shell-scriptspart-one/)
+
+    > Mocking df command for test case
