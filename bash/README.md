@@ -4,6 +4,9 @@ This folder demonstrates bash syntax.
 
   > Here explains a way to receive arguments for bash scripts.
 
+- `source` syntax [example](./examples/source)
+
+
 
 # Reference
 
