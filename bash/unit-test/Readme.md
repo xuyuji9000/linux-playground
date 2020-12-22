@@ -1,6 +1,6 @@
 This folder is responsible for explaining shell unit testing.
 
-- First unit test example: *[equality_test.sh](./equality_test.sh)*
+- First unit test example: *[firt_test.sh](./equality_test.sh)*
 
     ```
     $ ./equality_test.sh
