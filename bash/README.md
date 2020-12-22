@@ -21,3 +21,7 @@ This folder demonstrates bash syntax.
 4. [Shell & Utilities](https://pubs.opengroup.org/onlinepubs/9699919799/)
 
     > Refer this for POSIX specification
+
+5. [Shell Style Guide](https://google.github.io/styleguide/shellguide.html#s7-naming-conventions)
+
+    > Shell style guide from Google
