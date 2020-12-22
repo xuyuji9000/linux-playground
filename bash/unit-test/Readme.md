@@ -10,6 +10,8 @@ This folder is responsible for explaining shell unit testing.
 
     OK
     ```
+
+- More sophisticated test [example](./example)
     
 
 # Reference
@@ -21,3 +23,7 @@ This folder is responsible for explaining shell unit testing.
 2. [Unit Testing Shell Scripts:Part One](https://www.leadingagile.com/2018/10/unit-testing-shell-scriptspart-one/)
 
     > Mocking `df` command for test case
+
+3. [Unit Testing Shell Scripts:Part Two](https://www.leadingagile.com/2018/10/unit-testing-shell-scriptspart-two/)
+
+    > Example of implementing test in shunit2
