@@ -2,6 +2,28 @@
 
 `tar` is a computer software utility for collecting many files into one archive file.
 
+## Options
+
+- `-p`
+
+    Preserve permissions.
+
+- `-c`
+
+    Create new file.
+
+- `-f`
+
+    Allows to specify the filename of the archive.
+
+## Examples
+
+- Create a tar file for a directory
+
+    `tar -pcf TAR_FILE.tar SOURCE_DIRECTORY`
+
+    > `.FILENAME` ignored files are archived as well.
+
 # Q&A
 
 Q: What is the advantage of [archive file](https://en.wikipedia.org/wiki/Archive_file)?
