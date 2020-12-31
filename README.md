@@ -50,6 +50,6 @@
 
 - [Linux kernel coding style](https://www.kernel.org/doc/html/v4.16/process/coding-style.html)
 
-- [tput](https://www.linuxcommand.org/lc3_adv_tput.php)
+- [tput](./tput.md)
 
     > This article introduce `tput` command in depth.
