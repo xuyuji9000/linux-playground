@@ -7,9 +7,3 @@ While it may note seem like a big problem to load a bunch of instructions into m
 - Shared Library
 
 - Other information in the execution context
-
-
-
-Q: What is Linux Execution Format?
-
-A: [Understand_Linux_Execution_Format](./dependencies/Understand_Linux_Execution_Format.md)
