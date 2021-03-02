@@ -57,3 +57,5 @@ int main()
     MacOS is using its own object format `Mach-O`
 
 4. [Understanding the ELF File Format](https://linuxhint.com/understanding_elf_file_format/)
+
+    > This fie described the benefits of standardizing binary file format with  ELF format.
