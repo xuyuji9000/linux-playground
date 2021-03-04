@@ -59,3 +59,7 @@ int main()
 4. [Understanding the ELF File Format](https://linuxhint.com/understanding_elf_file_format/)
 
     > This fie described the benefits of standardizing binary file format with  ELF format.
+
+5. [In-depth: ELF - The Extensible & Linkable Format](https://www.youtube.com/watch?v=nC1U1LJQL8o)
+
+    > This video provides a structured introduction of ELF
