@@ -63,3 +63,8 @@ int main()
 5. [In-depth: ELF - The Extensible & Linkable Format](https://www.youtube.com/watch?v=nC1U1LJQL8o)
 
     > This video provides a structured introduction of ELF
+
+
+6. [Application binary interface](https://en.wikipedia.org/wiki/Application_binary_interface)
+
+    > ELF format is first published in the specification for the *application binary interface*(ABI) of Unix 
