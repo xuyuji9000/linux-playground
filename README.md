@@ -30,7 +30,7 @@
 
     - [Understanding the Linux Kernel](https://doc.lagout.org/operating%20system%20/linux/Understanding%20Linux%20Kernel.pdf)
 
-      > Reading [Notes](./Understanding_Linux_Kernel)
+      > Reading [Notes](./Understanding_Linux_Kernel/Readme.md)
 
     - [Understanding Linux Network Internals](https://book.douban.com/subject/1475839/)
 
