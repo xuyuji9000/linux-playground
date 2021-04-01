@@ -34,7 +34,7 @@
 
     - [Understanding Linux Network Internals](https://book.douban.com/subject/1475839/)
 
-    - [Linux Device Drivers, Third Edition](https://lwn.net/Kernel/LDD3/)
+    - [Linux Device Drivers, Third Edition](./Linux-Device-Drivers-Third-Edition.pdf)
 
 - Learning Bash
 
