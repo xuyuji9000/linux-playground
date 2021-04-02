@@ -6,7 +6,7 @@ This folder is used to analysis the commit statistics of a stable kernel patch.
 ```
 virtualenv -p python3.9 venv
 source venv/bin/activate
-pip3 install jupyter
+pip3 install requirements.txt
 ```
 
 - Open Jupyter notebook
