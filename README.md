@@ -57,3 +57,5 @@
 - [Operating Systems: Crash Course Computer Science #18](https://www.youtube.com/watch?v=26QPDBe-NB8)
 
     > This video gives historical introduction of the development of operating system.
+
+  - [Build Linux kernel](./build-linux-kernel.md)
