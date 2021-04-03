@@ -14,6 +14,13 @@
 
     > The reasoning here is that, there is no repeated environment to sustain the knowledge.
 
+## Historical development of operating system
+
+> Learning history helps with understanding why.
+
+- [Operating Systems: Crash Course Computer Science #18](https://www.youtube.com/watch?v=26QPDBe-NB8)
+
+    > This video gives historical introduction of the development of operating system.
 
 ## Learning kernel
 
@@ -33,29 +40,32 @@
 
     - [Linux Device Drivers, Third Edition](./Linux-Device-Drivers-Third-Edition.pdf)
 
-## Learning Bash
-
-- Learning Bash
-
-    - [Advanced Bash-Scripting Guide](https://tldp.org/LDP/abs/abs-guide.pdf)
-
-    - [Bash Reference Manual](https://www.gnu.org/software/bash/manual/html_node/index.html#Top)
-
-    - [How Program Loads](./bash/How-Program-Loads.md)
-    
-    - [ELF format](./ELF_format/Readme.md)
-
-- Filesystem
-
-    - [An introduction to Linux filesystems](https://opensource.com/life/16/10/introduction-linux-filesystems)
-
 - [Linux kernel coding style](https://www.kernel.org/doc/html/v4.16/process/coding-style.html)
+
+- [How Program Loads](./bash/How-Program-Loads.md)
+
+- [ELF format](./ELF_format/Readme.md)
+
+
+
+## Filesystem
+
+- [An introduction to Linux filesystems](https://opensource.com/life/16/10/introduction-linux-filesystems)
+
+
+## User Space
+
+> Try to organize Linux user space related learning here.
 
 - [userspace](./userspace/Readme.md)
 
-- [Operating Systems: Crash Course Computer Science #18](https://www.youtube.com/watch?v=26QPDBe-NB8)
+-  Learning Bash
 
-    > This video gives historical introduction of the development of operating system.
+  - [Advanced Bash-Scripting Guide](https://tldp.org/LDP/abs/abs-guide.pdf)
+
+  - [Bash Reference Manual](https://www.gnu.org/software/bash/manual/html_node/index.html#Top)
+
+
 
 
 ## Linux administration
