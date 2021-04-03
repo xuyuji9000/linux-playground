@@ -42,22 +42,25 @@ KERNEL_RRELEASE=`uname -r`
 cp -v /boot/config-${KERNEL_RRELEASE} .config
 ```
 
-8. Select feature 
-
-```
-make menuconfig
-```
-
-9. Comment `CONFIG_SYSTEM_TRUSTED_KEYS="certs/rhel.pem"`
+8. Comment `CONFIG_SYSTEM_TRUSTED_KEYS="certs/rhel.pem"`
 
     > This is private key used by RedHat to sign off the kernel modules
 
     > I don't have it
 
+9. Select feature 
+
+```
+make menuconfig
+```
+
+
+
 9. Build
 
 ``` bash
 # Build inside a tmux session
+yum install tmux
 tmux new -s kernel
 
 make rpm-pkg
