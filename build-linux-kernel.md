@@ -66,3 +66,17 @@ tmux new -s kernel
 time make rpm-pkg
 ```
 
+10. Install new kernel
+
+```
+rpm -iUv /root/rpmbuild/RPMS/x86_64/*.rpm
+```
+
+11. Reboot
+
+```
+shutdown -r now
+
+# ...
+urname -r
+```
