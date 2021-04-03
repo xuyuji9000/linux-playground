@@ -63,6 +63,6 @@ make menuconfig
 yum install tmux
 tmux new -s kernel
 
-make rpm-pkg
+time make rpm-pkg
 ```
 
