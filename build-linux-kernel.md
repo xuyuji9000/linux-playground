@@ -52,6 +52,9 @@ make menuconfig
 9. Build
 
 ``` bash
+# Build inside a tmux session
+tmux new -s kernel
+
 make rpm-pkg
 ```
 
