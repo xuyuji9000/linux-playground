@@ -3,7 +3,7 @@ This file is used to document the learning of building Linux kernel.
 
 - Distribution: Centos 8
 
-- Build machine spec: 4 vCPU, 8G memory
+- Build machine spec: 4 vCPU, 16G memory
 
 # Steps
 
