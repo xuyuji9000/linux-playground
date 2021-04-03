@@ -14,15 +14,17 @@
 
     > The reasoning here is that, there is no repeated environment to sustain the knowledge.
 
-## System Calls Examples
+## Source code in-depth analysis
 
 - [execve()](./systemcalls/execve/main.c)
 
   This system call is used for program loading
 
-## References to learn Linux 
+## Operational
 
-- Install linux on Raspberry Pi to have a physical machine to play with
+- [Build Linux kernel](./build-linux-kernel.md)
+
+## References to learn Linux 
 
 - Go through Linux admin [tutorial](https://www.tutorialspoint.com/linux_admin/index.htm)
 
@@ -58,4 +60,4 @@
 
     > This video gives historical introduction of the development of operating system.
 
-  - [Build Linux kernel](./build-linux-kernel.md)
+
