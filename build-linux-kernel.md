@@ -15,6 +15,7 @@ This file is used to document the learning of building Linux kernel.
 dnf group install "Development Tools"
 dnf install ncurses-devel
 dnf install elfutils-libelf-devel
+dnf install openssl-devel
 ```
 
 
