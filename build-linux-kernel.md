@@ -3,6 +3,8 @@ This file is used to document the learning of building Linux kernel.
 
 - Distribution: Centos 8
 
+- Build machine spec: 4 vCPU, 8G memory
+
 # Steps
 
 1. Prepare machine
