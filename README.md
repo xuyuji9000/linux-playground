@@ -30,6 +30,8 @@
 
 - [Build Linux kernel](./build-linux-kernel.md)
 
+- [Build Linux kernel module](./build-linux-kernel-module/Readme.md)
+
 - Read Linux source code book
 
     - [Understanding the Linux Kernel](https://doc.lagout.org/operating%20system%20/linux/Understanding%20Linux%20Kernel.pdf)
