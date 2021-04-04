@@ -5,3 +5,7 @@ This folder contains userspace cli documents.
     > This article introduce `tput` command in depth.
 
 - [vi](./vi.md)
+
+- [sed](./sed)
+
+    > This folder contains `sed` using examples
