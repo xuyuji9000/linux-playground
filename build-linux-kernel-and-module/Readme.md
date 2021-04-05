@@ -1,11 +1,11 @@
-This file is used to document the learning of building Linux kernel.
+This file is used to document the learning of building Linux kernel and module.
 
 
 - Distribution: Centos 8
 
 - Build machine spec: 4 vCPU, 16G memory
 
-# Steps
+# Kernel Build Steps
 
 1. Prepare machine
 
@@ -73,5 +73,16 @@ urname -r
 ```
 
 
-# Build history
+# Module build steps
+
+1. Prepare dependencies, [script](./prepare-dependencies.sh)
+
+2. [code example](./build-module-example)[1]
+
+
+
+# Reference
+1. Get example [source](https://github.com/martinezjavier/ldd3)
+
+    > ldd3: Linux Device Drivers 3 examples updated to work with recent kernels
 
