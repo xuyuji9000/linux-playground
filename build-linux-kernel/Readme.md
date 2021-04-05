@@ -25,6 +25,8 @@ This file is used to document the learning of building Linux kernel.
 7. Copy config file from the current system
 
 ```
+# cd into source directory
+
 # Get kernel release info
 KERNEL_RRELEASE=`uname -r`
 
