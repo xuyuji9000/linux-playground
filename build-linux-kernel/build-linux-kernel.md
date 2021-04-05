@@ -11,18 +11,7 @@ This file is used to document the learning of building Linux kernel.
 
     > Using alicloud machine for now, cause it provides expiration feature.
 
-2. Prepare dependencies
-
-```
-dnf group install "Development Tools"
-dnf install ncurses-devel
-dnf install elfutils-libelf-devel
-dnf install openssl-devel
-
-# prepare 
-dnf config-manager --set-enabled PowerTools
-dnf install dwarves
-```
+2. Prepare dependencies, [script](./prepare-dependencies.sh)
 
 
 3. Move to `/tmp` for execution
