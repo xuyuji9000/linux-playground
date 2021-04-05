@@ -28,7 +28,7 @@
 
   This system call is used for program loading
 
-- [Build Linux kernel](./build-linux-kernel.md)
+- [Build Linux kernel](./build-linux-kernel/Readme.md)
 
 - [Build Linux kernel module](./build-linux-kernel-module/Readme.md)
 
