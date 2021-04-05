@@ -77,12 +77,28 @@ urname -r
 
 1. Prepare dependencies, [script](./prepare-dependencies.sh)
 
-2. [code example](./build-module-example)[1]
+2. [code example](./build-module-example)
 
+3. Build
 
+``` bash
+make
+```
 
-# Reference
-1. Get example [source](https://github.com/martinezjavier/ldd3)
+4. Load module
 
-    > ldd3: Linux Device Drivers 3 examples updated to work with recent kernels
+``` bash
+# Load module 
+insmod hello.ko
+
+# Check kernel message
+dmesg
+```
+
+5. Remove module
+
+``` bash
+rmmod hello
+```
+
 
