@@ -51,7 +51,7 @@ make menuconfig
 
 ``` bash
 # Build inside a tmux session
-yum install tmux
+dnf install tmux
 tmux new -s kernel
 
 time make rpm-pkg
