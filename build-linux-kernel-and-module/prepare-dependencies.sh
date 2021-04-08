@@ -1,11 +1,11 @@
 #!/bin/sh
 
-dnf group install "Development Tools" -y
-dnf install ncurses-devel -y
-dnf install elfutils-libelf-devel -y
-dnf install openssl-devel -y
+sudo dnf group install "Development Tools" -y
+sudo dnf install ncurses-devel -y
+sudo dnf install elfutils-libelf-devel -y
+sudo dnf install openssl-devel -y
 
 # Repository PowerTools by default is not enabled
 # use "dnf repolist --all" to check for more info.
-dnf config-manager --set-enabled PowerTools
-dnf install dwarves -y
+sudo dnf config-manager --set-enabled PowerTools
+sudo dnf install dwarves -y
