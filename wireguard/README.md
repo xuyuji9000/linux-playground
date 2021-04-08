@@ -1,5 +1,7 @@
 # wireguard-playground
 
+- [Build from source](./build-from-source.md)
+
 
 ## Potential feature request
 
