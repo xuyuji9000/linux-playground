@@ -7,5 +7,5 @@ sudo dnf install openssl-devel -y
 
 # Repository PowerTools by default is not enabled
 # use "dnf repolist --all" to check for more info.
-sudo dnf config-manager --set-enabled PowerTools
+sudo dnf config-manager --set-enabled powertools
 sudo dnf install dwarves -y
