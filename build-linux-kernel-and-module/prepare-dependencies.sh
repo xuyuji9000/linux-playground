@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 sudo dnf group install "Development Tools" -y
 sudo dnf install ncurses-devel -y
 sudo dnf install elfutils-libelf-devel -y
