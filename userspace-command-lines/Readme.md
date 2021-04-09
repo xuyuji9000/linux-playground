@@ -1,4 +1,4 @@
-This folder contains userspace cli documents.
+This folder contains learnings of userspace command lines
 
 - [tput](./tput.md)
 
@@ -9,3 +9,5 @@ This folder contains userspace cli documents.
 - [sed](./sed)
 
     > This folder contains `sed` using examples
+
+- [awk](./awk.md)
