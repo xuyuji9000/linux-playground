@@ -1,6 +1,8 @@
 # wireguard-playground
 
-- [Installation](./Installation.md)
+- [server-configuration](./server-configuration.md)
+
+- [client-configuration](./client-configuration.md)
 
 - [wireguard-go](./wireguard-go.md)
 
