@@ -1,6 +1,10 @@
 # wireguard-playground
 
-- [Build from source](./build-from-source.md)
+- [Installation](./Installation.md)
+
+- [wireguard-go](./wireguard-go.md)
+
+    > Dissect Wireguard go source code
 
 
 ## Potential feature request
