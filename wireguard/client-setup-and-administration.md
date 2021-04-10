@@ -1,5 +1,6 @@
-This document contains configuration instruction for Wireguard client.
+This document contains setup and administration instructions for Wireguard client.
 
+# Setup
 
 1. Install Wireguard client. 
 
@@ -47,3 +48,15 @@ AllowedIPs = 0.0.0.0/0, ::/0
 ``` bash
 wg-quick up wg0
 ```
+
+
+# Administration
+
+- Get interface configuration
+
+``` bash
+# Find it here on macos
+ls /usr/local/etc/wireguard/INTERFACE_NAME.conf
+```
+
+- INTERFACE_NAME is also needed for `wg-quick`

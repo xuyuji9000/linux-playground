@@ -2,7 +2,7 @@
 
 - [server-configuration](./server-configuration.md)
 
-- [client-configuration](./client-configuration.md)
+- [client-setup-and-administration](./client-setup-and-administration.md)
 
 - [wireguard-go](./wireguard-go.md)
 
