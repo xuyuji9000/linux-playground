@@ -72,6 +72,7 @@ sysctl -p
 8. Generate client key
 
     ``` bash
+    umask 077
     wg genkey | sudo tee privatekey | wg pubkey | sudo tee publickey
     ```
 
