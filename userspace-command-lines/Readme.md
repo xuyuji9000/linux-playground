@@ -4,7 +4,7 @@ This folder contains learnings of userspace command lines
 
     > This article introduce `tput` command in depth.
 
-- [vi](./vi.md)
+- [vim](./vim.md)
 
 - [sed](./sed)
 
