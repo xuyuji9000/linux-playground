@@ -8,6 +8,10 @@
 
     > Dissect Wireguard go source code
 
+- [wireguard-linux](./wireguard-linux.md)
+
+    > Dissect wireguard source code as a linux kernel module
+
 
 ## Potential feature request
 
