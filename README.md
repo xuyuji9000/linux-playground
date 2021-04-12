@@ -34,6 +34,8 @@
 
 - [Build Linux kernel and module](./build-linux-kernel-and-module/Readme.md)
 
+- [Annotate net_device data structure](./annotate-net-device-data-structure.md)
+
 - Read Linux source code book
 
     - [Understanding the Linux Kernel](https://doc.lagout.org/operating%20system%20/linux/Understanding%20Linux%20Kernel.pdf)
