@@ -25,7 +25,7 @@ brew install --verbose --debug ctags
 
 # Move into the target directory
 
-ctag --recurse .
+ctags --recurse .
 ```
 
 - Ctag shortcuts
