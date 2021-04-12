@@ -8,7 +8,7 @@
 
     > Dissect Wireguard go source code
 
-- [wireguard-linux](./wireguard-linux.md)
+- [wireguard-linux](./wireguard-linux/Readme.md)
 
     > Dissect wireguard source code as a linux kernel module
 
