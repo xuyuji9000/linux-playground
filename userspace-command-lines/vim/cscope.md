@@ -5,7 +5,7 @@ This file documents `cscope` usage with vim.
 - Prepare *cscope.files*
 
 ``` shell
-find . -type f -iname *.c -iname *.h > cscope.files
+find . -type f -iname *.c -o -iname *.h > cscope.files
 ```
 
 - Generate database 
