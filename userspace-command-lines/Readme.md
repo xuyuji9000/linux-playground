@@ -15,3 +15,7 @@ This folder contains learnings of userspace command lines
 - [touch](touch.md)
 
 - [grep](./grep.md)
+
+- [bc](./bc.md)
+
+   > `bc` does mathmatic calculation in command line
