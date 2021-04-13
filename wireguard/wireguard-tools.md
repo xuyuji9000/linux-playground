@@ -64,3 +64,17 @@ static struct nlmsghdr *mnl_nlmsg_put_header(void *buf)
 
 
 ```
+
+Q: What does `mnl_nlmsg_ok` do?
+
+``` C
+static bool mnl_nlmsg_ok(const struct nlmsghdr *nlh, int len)
+{
+    // check if recvmsg system call get more data than just the headers
+    return len >= (int)sizeof(struct nlmsghdr) &&
+            nlh->nlmsg_len >= sizeof(struct nlmsghdr) &&
+            (int)nlh->nlmsg_len <= len;
+}
+```
+
+
