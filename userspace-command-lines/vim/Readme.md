@@ -27,6 +27,9 @@ This folder is used to vi examples.
 
 - [ctags](./ctags.md)
 
+- [cscope](./cscope.md)
+
+
 # Reference
 
 1. [Vim: error reading input](https://stackoverflow.com/questions/40319486/vim-error-reading-input#answer-40321262)
