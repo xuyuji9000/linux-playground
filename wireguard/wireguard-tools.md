@@ -27,3 +27,23 @@ static int kernel_get_wireguard_interfaces(struct string_list *list)
     // ...
 }
 ```
+
+Q: What does method `mnl_nlmsg_put_header` do?
+
+``` C
+// ./src/netlink.h
+// 1. Take an empty buffer buf
+// 2. Get nlmsghdr data structure size and ALIGN it
+// 3. Initiate a nlmsghdr pointer, point to buf
+static struct nlmsghdr *mnl_nlmsg_put_header(void *buf)
+{
+        int len = MNL_ALIGN(sizeof(struct nlmsghdr));
+        struct nlmsghdr *nlh = buf;
+
+        memset(buf, 0, len);
+        nlh->nlmsg_len = len;
+        return nlh;
+}
+
+
+```
