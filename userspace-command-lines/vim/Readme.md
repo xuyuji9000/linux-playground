@@ -18,26 +18,6 @@ This folder is used to vi examples.
     > - `ZZ` only update timestamp when there is change to file
     > - `:wq` updates timestamp regardless
 
-- Prepare ctags on Macos
-
-``` bash
-brew install --verbose --debug ctags 
-
-# Move into the target directory
-
-ctags --recurse .
-```
-
-- Ctag shortcuts
-
-    Go to function definition: `Control + ]`
-
-    Go back to function instance: `Control + T`
-
-    Open function definition in a slit: `Control + W, Control + ]` 
-
-    Navigate between slits: `Control + W, Control + (arrow key)`
-
 - Search for specific file 
 
 ```
@@ -45,6 +25,7 @@ ctags --recurse .
 :Explore **/[pattern]
 ```
 
+- [ctags](./ctags.md)
 
 # Reference
 
