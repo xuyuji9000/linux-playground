@@ -13,3 +13,9 @@ find . -type f -iname *.c -iname *.h > cscope.files
 ``` shell
 cscope -b -q
 ```
+
+- Add database 
+
+``` vim
+:cs add cscope.out
+```
