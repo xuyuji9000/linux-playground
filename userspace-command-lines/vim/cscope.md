@@ -11,7 +11,7 @@ find . -type f -iname *.c -o -iname *.h > cscope.files
 - Generate database 
 
 ``` shell
-cscope -b -q
+cscope -b -i cscope.files
 ```
 
 - Add database 
