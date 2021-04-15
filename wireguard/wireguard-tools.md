@@ -71,9 +71,30 @@ static struct nlmsghdr *mnl_nlmsg_put_header(void *buf)
 Q: What does `mnl_nlmsg_ok` do?
 
 ``` C
+// ./src/netlink.h
 static bool mnl_nlmsg_ok(const struct nlmsghdr *nlh, int len)
 {
-    // check if recvmsg system call get more data than just the headers
+    // there are 3 length parameters involved here
+    //
+    // - len:                           length of data received from recvmsg() system call
+    // - (int)sizeof(struct nlmsghdr)   size of the nlmsghdr data structure
+    // - nlh->nlmsg_len:                length info contained within nlh
+    //
+    // len >= (int)sizeof(struct nlmsghdr)
+    //     received length need to be bigger than the length of the meesage header data structure
+    //
+    // nlh->nlmsg_len >= sizeof(struct nlmsghdr)
+    //     nlmsg_len need to be bigger or eaqual to data structure size
+    //     cause it may contain more than just one message header
+    // 
+    // len >= (int)nlh->nlmsg_len
+    //     received length need to be bigger than nlmsg_len
+    //     cause received length may contain payload 
+    // 
+    // Eventually, it's like 
+    //     len >= (int)nlh->nlmsg_len >= sizeof(struct nlmsghdr)
+    
+
     return len >= (int)sizeof(struct nlmsghdr) &&
             nlh->nlmsg_len >= sizeof(struct nlmsghdr) &&
             (int)nlh->nlmsg_len <= len;
