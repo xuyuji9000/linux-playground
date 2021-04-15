@@ -102,3 +102,39 @@ static bool mnl_nlmsg_ok(const struct nlmsghdr *nlh, int len)
 ```
 
 
+Q: Better understand `__mnl_cb_run` path
+
+
+``` C
+// ./src/netlink.h
+static int __mnl_cb_run(const void *buf, size_t numbytes,
+                        unsigned int seq, unsigned int portid,
+                        mnl_cb_t cb_data, void *data,
+                        const mnl_cb_t *cb_ctl_array,
+                        unsigned int cb_ctl_array_len)
+{
+     // ...
+                // Execute the control logic based on message type
+                // Below NLMSG_MIN_TYPE is reserved for control logic
+                if (nlh->nlmsg_type >= NLMSG_MIN_TYPE) {
+                        if (cb_data){
+                                ret = cb_data(nlh, data);
+                                if (ret <= MNL_CB_STOP)
+                                        goto out;
+                        }
+                } 
+     // ...
+                else if (default_cb_array[nlh->nlmsg_type]) {
+
+                        // Execute the control logic 
+
+                        ret = default_cb_array[nlh->nlmsg_type](nlh, data);
+                        if (ret <= MNL_CB_STOP)
+                                goto out;
+                }
+    // ...
+}
+```
+
+
+
