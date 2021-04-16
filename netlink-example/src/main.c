@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <sys/socket.h>
 #include <linux/netlink.h>
 
