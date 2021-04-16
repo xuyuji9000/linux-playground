@@ -7,7 +7,7 @@
 
 
 #define MNL_SOCKET_AUTOPID 0
-#define SOCKET_BUFFER_SIZE
+#define SOCKET_BUFFER_SIZE (mnl_ideal_socket_buffer_size())
 struct nlmsghdr *nlh = NULL;
 struct iovec iov;
 int sock_fd;
