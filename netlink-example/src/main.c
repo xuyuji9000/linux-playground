@@ -103,8 +103,7 @@ static size_t mnl_ideal_socket_buffer_size(void)
     return size;
 }
 
-// pass in an empty buffer
-// put message header on the buffer
+// put struct nlmsghdr on an empty buffer
 static struct nlmsghdr* mnl_nlmsg_put_header(void* buf)
 {
     int len = MNL_ALIGN(sizeof(struct nlmsghdr));
@@ -114,6 +113,18 @@ static struct nlmsghdr* mnl_nlmsg_put_header(void* buf)
     nlh->nlmsg_len = len;
     
     return nlh;
+}
+
+// piggy-back an extra message type 
+static void* mnl_nlmsg_put_extra_header(struct nlmsghdr* nlh, size_t size)
+{
+    char* ptr = (char*)nlh + nlh->nlmsg_len;
+    size_t len = MNL_ALIGN(size);
+    nlh->nlmsg_len += len;
+
+    memset(ptr, 0, len);
+
+    return ptr;
 }
 
 int main() 
@@ -126,6 +137,8 @@ int main()
     unsigned int seq;
 
     struct nlmsghdr* nlh;
+    struct ifinfomsg* ifm;
+    size_t message_len;
     
     // prepare the file descriptor 
     // for communicating through rtnetlink
@@ -156,6 +169,19 @@ int main()
     portid = (int)mnl_socket_get_portid(nl);
 
     nlh = mnl_nlmsg_put_header(rtnl_buffer);
+    nlh->nlmsg_type  = RTM_GETLINK;
+    nlh->nlmsg_flags = NLM_F_REQUEST | NLM_F_ACK | NLM_F_DUMP;
+    nlh->nlmsg_seq   = seq;
+
+    ifm = mnl_nlmsg_put_extra_header(nlh, sizeof(struct ifinfomsg));
+    ifm->ifi_family = AF_UNSPEC;
+
+    message_len = nlh->nlmsg_len;
+
+
+    printf("message length after add ifinfomsg struct: %d", message_len);
+    
+
 
 cleanup:
     if(nl)
