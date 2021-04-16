@@ -6,6 +6,12 @@ This folder contains an example using netlink feature to communicate with the ke
 gcc -o main main.c
 ```
 
+- Package source code
+
+``` shell
+tar -cf src.tar ./src
+```
+
 # Reference
 
 1. [Linux Netlink as an IP Services Protocol](https://tools.ietf.org/html/rfc3549)

@@ -7,6 +7,7 @@
 
 
 #define MNL_SOCKET_AUTOPID 0
+#define SOCKET_BUFFER_SIZE
 struct nlmsghdr *nlh = NULL;
 struct iovec iov;
 int sock_fd;
@@ -35,7 +36,8 @@ static struct mnl_socket* mnl_socket_open(int bus)
     return nl;
 }
 
-
+// If the destination is kernel, pid should be set to 0
+// and kernel will update pid
 static int mnl_socket_bind(struct mnl_socket *nl, unsigned int groups, pid_t pid)
 {
     int ret;
@@ -74,13 +76,55 @@ static int mnl_socket_close(struct mnl_socket *nl)
     return ret;
 }
 
+
+static pid_t mnl_socket_get_portid(struct mnl_socket *nl)
+{
+    return nl->addr.nl_pid;
+}
+
+
+// control the size of buffer 
+// so it fits the operating system page size
+static size_t mnl_ideal_socket_buffer_size(void)
+{
+    static size_t size = 0;
+
+    if(size)
+        size;
+    size = (size_t)sysconf(_SC_PAGESIZE)
+    
+    if (size > 8192)
+        size = 8192;
+
+    return size
+}
+
+// pass in an empty buffer
+// put message header on the buffer
+static struct nlmsghdr* mnl_nlmsg_put_header(void* buf)
+{
+    int len = MNL_ALIGN(sizeof(struct nlmsghdr));
+    struct nlmsghdr* nlh = buf;
+
+    memset(buf, 0, len);
+    nlh->nlmsg_len = len;
+    
+    return nlh;
+}
+
 int main() 
 {
-    struct mnl_socket *nl;
+    struct mnl_socket* nl = NULL;
+    char* rtnl_buffer = NULL;
+
     int ret = 0;
+    pid_t portid;            // netlink socket unicast address
+    unsigned int seq;
+
+    struct nlmsghdr* nlh;
     
-    // Prepare the file descriptor 
-    // For communicating through rtnetlink
+    // prepare the file descriptor 
+    // for communicating through rtnetlink
     nl= mnl_socket_open(NETLINK_ROUTE);
     if(!nl) 
     {
@@ -93,7 +137,23 @@ int main()
         ret = -errno;
         goto cleanup;
     }
-    printf("unique id for netlink communication: %d \n", nl->addr.nl_pid);
+
+
+    // allocate buffer 
+    rtnl_buffer = calloc(SOCKET_BUFFER_SIZE,1);
+    if(!rtnl_buffer)
+    {
+        ret = -errno;
+        goto cleanup;
+    }
+   
+    // prepare the message 
+    seq = time(NULL);
+    portid = (int)mnl_socket_get_portid(nl);
+
+    rtnl_buffer = mnl_nlmsg_put_header(rtnl_buffer);
+
+    printf("Message length:%d ", rtnl_buffer->nlmsg_len);
 
 cleanup:
     if(nl)

@@ -1,1 +1,8 @@
+# main binary
 main
+
+# ctags output
+tags
+
+# source code package
+src.tar
