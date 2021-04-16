@@ -155,9 +155,9 @@ int main()
     seq = time(NULL);
     portid = (int)mnl_socket_get_portid(nl);
 
-    rtnl_buffer = mnl_nlmsg_put_header(rtnl_buffer);
+    nlh = mnl_nlmsg_put_header(rtnl_buffer);
 
-    printf("Message length:%d ", rtnl_buffer->nlmsg_len);
+    printf("Message length:%d ", nlh->nlmsg_len);
 
 cleanup:
     if(nl)
