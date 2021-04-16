@@ -5,6 +5,8 @@
 #include <sys/socket.h>
 #include <linux/netlink.h>
 
+#include "netlink.h"
+
 
 #define MNL_SOCKET_AUTOPID 0
 #define SOCKET_BUFFER_SIZE (mnl_ideal_socket_buffer_size())
