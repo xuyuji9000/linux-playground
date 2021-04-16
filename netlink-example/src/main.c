@@ -96,7 +96,7 @@ static size_t mnl_ideal_socket_buffer_size(void)
     if (size > 8192)
         size = 8192;
 
-    return size
+    return size;
 }
 
 // pass in an empty buffer

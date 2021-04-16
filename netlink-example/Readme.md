@@ -12,6 +12,13 @@ gcc -o main main.c
 tar -cf src.tar ./src
 ```
 
+- Extract source code 
+
+
+``` shell
+tar -x -v -f ./src.tar
+```
+
 # Reference
 
 1. [Linux Netlink as an IP Services Protocol](https://tools.ietf.org/html/rfc3549)
