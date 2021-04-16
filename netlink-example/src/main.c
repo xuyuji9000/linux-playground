@@ -157,8 +157,6 @@ int main()
 
     nlh = mnl_nlmsg_put_header(rtnl_buffer);
 
-    printf("Message length:%d ", nlh->nlmsg_len);
-
 cleanup:
     if(nl)
         mnl_socket_close(nl);
