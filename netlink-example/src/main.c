@@ -91,7 +91,7 @@ static size_t mnl_ideal_socket_buffer_size(void)
 
     if(size)
         size;
-    size = (size_t)sysconf(_SC_PAGESIZE)
+    size = (size_t)sysconf(_SC_PAGESIZE);
     
     if (size > 8192)
         size = 8192;
