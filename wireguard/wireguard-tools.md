@@ -138,5 +138,153 @@ static int __mnl_cb_run(const void *buf, size_t numbytes,
 }
 ```
 
+Q: What does `mnl_attr_parse` do?
+
+``` C
+// src/netlink.h
+
+// 1. mnl_attr_parse loop through the buffer from nlattr data structure perspective
+// 2. use cb process each nlattr
+static int mnl_attr_parse(const struct nlmsghdr *nlh, unsigned int offset, mnl_attr_cb_t cb, void *data)
+{
+    const struct nlattr *attr;
+
+    // ...
+    // 1. This mnl_attr_for_each macro loop throug the message 
+    //    see next snippet of annotation for more detailed explanation
+    // 
+    // 2. For every round of call on cb(), extract info from *attr* into *data*
+    mnl_attr_for_each(attr, nlh, offset)
+        if ((ret = cb(attr, data)) <= MNL_CB_STOP)
+            return ret;
+    // ...
+
+}
+```
+
+``` C
+// src/netlink.h
+
+// ...
+// As a whole this macro loop through the buffer attribute by attribute
+#define mnl_attr_for_each(attr, nlh, offset) \
+
+        // point to the attr to start
+        // attr here means attribute
+        for ((attr) = mnl_nlmsg_get_payload_offset((nlh), (offset)); \
+             
+             // check if the attribute is okie for the next round
+             mnl_attr_ok((attr), (char *)mnl_nlmsg_get_payload_tail(nlh) - (char *)(attr)); \
+
+             // point to the next attribute for the next round
+             (attr) = mnl_attr_next(attr))
+```
+
+Q: What does `parse_infomsg` do?
+
+
+``` C
+// src/netlink.h
+// parse_infomsg was passed into mnl_attr_parse as a callback function, to process each nlattr data structure
+static int parse_infomsg(const struct nlattr *attr, void *data)
+{
+    if (mnl_attr_get_type(attr) == IFLA_LINKINFO)
+        return mnl_attr_parse_nested(attr, parse_linkinfo, data);
+    else if (mnl_attr_get_type(attr) == IFLA_IFNAME)
+        interface->name = mnl_attr_get_str(attr);
+    return MNL_CB_OK;
+}
+```
+
+``` C
+// src/netlink.h
+
+// bitwise and the nlattr.nla_type with NLA_TYPE_MASK
+// before actul usage
+
+// This logic is copied right out of linux kernel netlink related code
+
+// Check kernel source code file *include/net/netlink.h* `nla_type` function
+
+static uint16_t mnl_attr_get_type(const struct nlattr *attr)
+{
+        return attr->nla_type & NLA_TYPE_MASK;
+}
+
+```
+
+Q: How does `mnl_attr_parse_nested` works?
+
+
+``` C
+// src/netlink.h
+static int mnl_attr_parse_nested(const struct nlattr *nested, mnl_attr_cb_t cb,
+                                 void *data)
+{
+    // ..
+    const struct nlattr *attr;
+
+    mnl_attr_for_each_nested(attr, nested)
+            if ((ret = cb(attr, data)) <= MNL_CB_STOP)
+                    return ret;
+}
+```
+
+
+``` C
+// src/netlink.h
+
+/*
+struct nlattr {
+        // nla_len here contain both header + payload length
+        __u16           nla_len;
+        __u16           nla_type;
+};
+*/
+
+
+
+// nest is the nlattr that encapsulate/nest other nlattr(s)
+#define mnl_attr_for_each_nested(attr, nest) \
+        
+        for ((attr) = mnl_attr_get_payload(nest); \
+             mnl_attr_ok((attr), (char *)mnl_attr_get_payload(nest) + mnl_attr_get_payload_len(nest) - (char *)(attr)); \
+             (attr) = mnl_attr_next(attr))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
