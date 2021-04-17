@@ -52,7 +52,7 @@
 
 - [ELF format](./ELF_format/Readme.md)
 
-- [netlink-example](./netlink-example/Readme.md)
+- [netlink](./netlink/Readme.md)
 
 
 
