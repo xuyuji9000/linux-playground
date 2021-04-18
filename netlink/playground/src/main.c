@@ -108,7 +108,21 @@ int main()
 
     message_len = nlh->nlmsg_len;
 
+    if (mnl_socket_sendto(nl, rtnl_buffer, message_len) < 0) {
+            ret = -errno;
+            goto cleanup;
+    }
 
+another:
+
+    if ((len = mnl_socket_recvfrom(nl, rtnl_buffer, SOCKET_BUFFER_SIZE)) < 0) {
+            ret = -errno;
+            goto cleanup;
+    }
+
+    if (len > 0)
+        goto another;
+    ret = 0;
 
 cleanup:
     if(nl)
