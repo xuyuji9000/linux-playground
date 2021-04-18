@@ -96,7 +96,7 @@ static ssize_t mnl_socket_recvfrom(const struct mnl_socket *nl, void *buf,
                 .msg_iovlen     = 1,
                 .msg_control    = NULL,
                 .msg_controllen = 0,
-                .msg_flags      = 0,
+                .msg_flags      = MSG_DONTWAIT,
         };
         ret = recvmsg(nl->fd, &msg, 0);
         if (ret == -1)
