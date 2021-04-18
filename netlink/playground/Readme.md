@@ -6,6 +6,13 @@ This folder contains an example using netlink feature to communicate with the ke
 gcc -o main main.c
 ```
 
+- Build with debug info
+
+
+``` shell
+gcc -Wall -g ./main.c
+```
+
 - Package source code
 
 ``` shell
