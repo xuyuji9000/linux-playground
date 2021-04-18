@@ -12,7 +12,7 @@
 
     > Dissect wireguard source code as a linux kernel module
 
-- [wireguard-tools](./wireguard-tools.md)
+- [wireguard-tools-annotation](./wireguard-tools-annotation.md)
 
     > This file annotate the wireguard-tools source code
 
