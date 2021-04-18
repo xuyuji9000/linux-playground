@@ -123,8 +123,6 @@ another:
 
     printf("length received: %d\n", (int)len);
 
-    if (len > 0)
-        goto another;
     ret = 0;
 
 cleanup:
