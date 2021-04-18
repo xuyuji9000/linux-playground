@@ -167,6 +167,17 @@ static int mnl_attr_parse(const struct nlmsghdr *nlh, unsigned int offset, mnl_a
 
 // ...
 // As a whole this macro loop through the buffer attribute by attribute
+// 
+// Steps:
+// 1. for loop initiation
+//    Add two headers' length to nlh(message header pointer address)
+//    assign the nlh to attr(attribute pointer address)
+//    attr will be used as the pointer go through the whole message buffer
+// 2. for loop condition
+//    Get tail(the end of the message) pointer address
+//    compute the distance between tail and the current attr
+//    make sure the distance is enough for the next attribute
+// 3. step to the next attribute
 #define mnl_attr_for_each(attr, nlh, offset) \
 
         // point to the attr to start
