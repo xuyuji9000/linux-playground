@@ -69,6 +69,7 @@ int main()
     struct nlmsghdr* nlh;
     struct ifinfomsg* ifm;
     size_t message_len;
+    ssize_t len;
     
     // prepare the file descriptor 
     // for communicating through rtnetlink
@@ -119,6 +120,8 @@ another:
             ret = -errno;
             goto cleanup;
     }
+
+    printf("length received: %d\n", (int)len);
 
     if (len > 0)
         goto another;
