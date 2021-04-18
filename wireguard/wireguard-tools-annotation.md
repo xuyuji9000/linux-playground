@@ -155,6 +155,8 @@ static int mnl_attr_parse(const struct nlmsghdr *nlh, unsigned int offset, mnl_a
     // 
     // 2. For every round of call on cb(), extract info from *attr* into *data*
     mnl_attr_for_each(attr, nlh, offset)
+        
+        // cb() function here process one nlattr at a time
         if ((ret = cb(attr, data)) <= MNL_CB_STOP)
             return ret;
     // ...
@@ -196,7 +198,9 @@ Q: What does `parse_infomsg` do?
 
 ``` C
 // src/netlink.h
-// parse_infomsg was passed into mnl_attr_parse as a callback function, to process each nlattr data structure
+
+// parse_infomsg was passed into mnl_attr_parse as a callback function
+// to process each nlattr data structure
 static int parse_infomsg(const struct nlattr *attr, void *data)
 {
     if (mnl_attr_get_type(attr) == IFLA_LINKINFO)
