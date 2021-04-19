@@ -206,6 +206,10 @@ void process_message(const void *buf, size_t numbytes)
             {
                 printf("met IFLA_LINKINFO");
             }
+            if(mnl_attr_get_type(attr) == IFLA_INFO_KIND)
+            {
+                printf("met IFLA_INFO_KIND");
+            }
             if(mnl_attr_get_type(attr) == IFLA_IFNAME)
             {
                 printf("attribute type received: IFLA_IFNAME\n");
