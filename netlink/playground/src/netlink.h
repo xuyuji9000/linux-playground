@@ -125,8 +125,9 @@ static pid_t mnl_socket_get_portid(struct mnl_socket *nl)
     return nl->addr.nl_pid;
 }
 
-void process_message(const struct nlmsghdr *nlh)
+void process_message(const void *buf)
 {
+    const struct nlmsghdr *nlh = buf;
     struct nlattr *attr = NULL;
 
     attr = (void *)nlh + MNL_NLMSG_HDRLEN + MNL_ALIGN(sizeof(struct ifinfomsg));
