@@ -150,11 +150,9 @@ void process_message(const void *buf)
     printf("attribute length received: %d\n", attr->nla_len);
     if(mnl_attr_get_type(attr) == IFLA_IFNAME)
     {
-        printf("attribute type received: IFLA_IFNAME\n";
+        printf("attribute type received: IFLA_IFNAME\n");
         printf("attribute payload: %s\n", mnl_attr_get_payload(attr));
     }
 
-    // print out payload
-    
 }
 
