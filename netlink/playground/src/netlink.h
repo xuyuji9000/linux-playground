@@ -170,6 +170,11 @@ static void *mnl_attr_get_payload(const struct nlattr *attr)
         return (void *)attr + MNL_ATTR_HDRLEN;
 }
 
+static struct nlmsghdr *mnl_nlmsg_next(const struct nlmsghdr *nlh)
+{
+    return (struct nlmsghdr *)((void *)nlh + MNL_ALIGN(nlh->nlmsg_len));
+}
+
 void process_message(const void *buf)
 {
     const struct nlmsghdr *nlh = buf;
@@ -191,6 +196,23 @@ void process_message(const void *buf)
             printf("attribute type received: IFLA_IFNAME\n");
             printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
         }
+    }
+    
+    nlh = mnl_nlmsg_next(nlh);
+
+    mnl_attr_for_each(attr, nlh, MNL_ALIGN(sizeof(struct ifinfomsg)))
+    {   
+        // printf("number %d attribute type received: %d \n", count, (int)mnl_attr_get_type(attr));
+        // printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
+        if(mnl_attr_get_type(attr) == IFLA_LINKINFO)
+        {   
+            printf("met IFLA_LINKINFO");
+        }   
+        if(mnl_attr_get_type(attr) == IFLA_IFNAME)
+        {   
+            printf("attribute type received: IFLA_IFNAME\n");
+            printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
+        }   
     }
 
 }
