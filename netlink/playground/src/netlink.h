@@ -11,6 +11,34 @@
 #define MNL_NLMSG_HDRLEN MNL_ALIGN(sizeof(struct nlmsghdr))
 #define MNL_ATTR_HDRLEN MNL_ALIGN(sizeof(struct nlattr))
 
+
+// Give back the pointer to netlink message payload 
+static void *mnl_nlmsg_get_payload_offset(const struct nlmsghdr *nlh, size_t offset)
+{
+        return (void *)nlh + MNL_NLMSG_HDRLEN + MNL_ALIGN(offset);
+}
+
+
+// Give back the pointer to the tail of netlink message payload 
+static void *mnl_nlmsg_get_payload_tail(const struct nlmsghdr *nlh)
+{
+        return (void *)nlh + MNL_ALIGN(nlh->nlmsg_len);
+}
+
+
+// Give back the pointer to the next nlattr 
+static struct nlattr *mnl_attr_next(const struct nlattr *attr)
+{
+        return (struct nlattr *)((void *)attr + MNL_ALIGN(attr->nla_len));
+}
+
+
+static bool mnl_attr_ok(const struct nlattr *attr, int len)
+{
+        return len >= (int)attr->nla_len &&
+               attr->nla_len >= sizeof(struct nlattr);
+}
+
 #define mnl_attr_for_each(attr, nlh, offset) \
         for ((attr) = mnl_nlmsg_get_payload_offset((nlh), (offset)); \
              mnl_attr_ok((attr), (char *)mnl_nlmsg_get_payload_tail(nlh) - (char *)(attr)); \
@@ -163,29 +191,4 @@ void process_message(const void *buf)
 
 }
 
-// Give back the pointer to netlink message payload 
-static void *mnl_nlmsg_get_payload_offset(const struct nlmsghdr *nlh, size_t offset)
-{
-        return (void *)nlh + MNL_NLMSG_HDRLEN + MNL_ALIGN(offset);
-}
 
-
-// Give back the pointer to the tail of netlink message payload 
-static void *mnl_nlmsg_get_payload_tail(const struct nlmsghdr *nlh)
-{
-        return (void *)nlh + MNL_ALIGN(nlh->nlmsg_len);
-}
-
-
-// Give back the pointer to the next nlattr 
-static struct nlattr *mnl_attr_next(const struct nlattr *attr)
-{
-        return (struct nlattr *)((void *)attr + MNL_ALIGN(attr->nla_len));
-}
-
-
-static bool mnl_attr_ok(const struct nlattr *attr, int len)
-{
-        return len >= (int)attr->nla_len &&
-               attr->nla_len >= sizeof(struct nlattr);
-}
