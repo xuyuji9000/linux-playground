@@ -10,11 +10,6 @@
 #define MNL_NLMSG_HDRLEN MNL_ALIGN(sizeof(struct nlmsghdr))
 #define MNL_ATTR_HDRLEN MNL_ALIGN(sizeof(struct nlattr))
 
-static void *mnl_nlmsg_get_payload_offset(const struct nlmsghdr *nlh, size_t offset)
-{
-        return (void *)nlh + MNL_NLMSG_HDRLEN + MNL_ALIGN(offset);
-}
-
 struct mnl_socket {
     int                fd;
     struct sockaddr_nl addr;
@@ -144,6 +139,15 @@ void process_message(const void *buf)
     const struct nlmsghdr *nlh = buf;
     struct nlattr *attr = NULL;
 
+    mnl_attr_for_each(attr, nlh, MNL_ALIGN(sizeof(struct ifinfomsg))
+    {
+        if(mnl_attr_get_type(attr) == IFLA_IFNAME)
+        {
+            printf("attribute type received: IFLA_IFNAME\n");
+            printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
+        }
+    }
+/*
     attr = (void *)nlh + MNL_NLMSG_HDRLEN + MNL_ALIGN(sizeof(struct ifinfomsg));
 
     // print out nlattr 
@@ -153,6 +157,38 @@ void process_message(const void *buf)
         printf("attribute type received: IFLA_IFNAME\n");
         printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
     }
+*/
 
 }
 
+// Give back the pointer to netlink message payload 
+static void *mnl_nlmsg_get_payload_offset(const struct nlmsghdr *nlh, size_t offset)
+{
+        return (void *)nlh + MNL_NLMSG_HDRLEN + MNL_ALIGN(offset);
+}
+
+
+// Give back the pointer to the tail of netlink message payload 
+static void *mnl_nlmsg_get_payload_tail(const struct nlmsghdr *nlh)
+{
+        return (void *)nlh + MNL_ALIGN(nlh->nlmsg_len);
+}
+
+
+// Give back the pointer to the next nlattr 
+static struct nlattr *mnl_attr_next(const struct nlattr *attr)
+{
+        return (struct nlattr *)((void *)attr + MNL_ALIGN(attr->nla_len));
+}
+
+
+#define mnl_attr_for_each(attr, nlh, offset) \
+        for ((attr) = mnl_nlmsg_get_payload_offset((nlh), (offset)); \
+             mnl_attr_ok((attr), (char *)mnl_nlmsg_get_payload_tail(nlh) - (char *)(attr)); \
+             (attr) = mnl_attr_next(attr))
+
+static bool mnl_attr_ok(const struct nlattr *attr, int len)
+{
+        return len >= (int)attr->nla_len &&
+               attr->nla_len >= sizeof(struct nlattr);
+}
