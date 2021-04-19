@@ -213,7 +213,7 @@ void process_message(const void *buf, size_t numbytes)
             }
         }
 
-        mnl_nlmsg_next(nlh, &len);
+        nlh =  mnl_nlmsg_next(nlh, &len);
     }
 
 /*
