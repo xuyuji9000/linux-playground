@@ -180,6 +180,10 @@ void process_message(const void *buf)
     {
         // printf("number %d attribute type received: %d \n", count, (int)mnl_attr_get_type(attr));
         // printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
+        if(mnl_attr_get_type(attr) == IFLA_LINKINFO)
+        {
+            printf("met IFLA_LINKINFO");
+        }
         if(mnl_attr_get_type(attr) == IFLA_IFNAME)
         {
             printf("attribute type received: IFLA_IFNAME\n");
