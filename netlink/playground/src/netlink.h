@@ -8,6 +8,7 @@
 #define MNL_ALIGNTO 4
 #define MNL_ALIGN(len) (((len)+MNL_ALIGNTO-1) & ~(MNL_ALIGNTO-1))
 #define MNL_NLMSG_HDRLEN MNL_ALIGN(sizeof(struct nlmsghdr))
+#define MNL_ATTR_HDRLEN MNL_ALIGN(sizeof(struct nlattr))
 
 static void *mnl_nlmsg_get_payload_offset(const struct nlmsghdr *nlh, size_t offset)
 {
@@ -133,6 +134,11 @@ static uint16_t mnl_attr_get_type(const struct nlattr *attr)
         return attr->nla_type & NLA_TYPE_MASK;
 }
 
+static void *mnl_attr_get_payload(const struct nlattr *attr)
+{
+        return (void *)attr + MNL_ATTR_HDRLEN;
+}
+
 void process_message(const void *buf)
 {
     const struct nlmsghdr *nlh = buf;
@@ -140,8 +146,15 @@ void process_message(const void *buf)
 
     attr = (void *)nlh + MNL_NLMSG_HDRLEN + MNL_ALIGN(sizeof(struct ifinfomsg));
 
+    // print out nlattr 
     printf("attribute length received: %d\n", attr->nla_len);
-    printf("attribute type received: %d\n", mnl_attr_get_type(attr));
-  
+    if(mnl_attr_get_type(attr) == IFLA_IFNAME)
+    {
+        printf("attribute type received: IFLA_IFNAME\n";
+        printf("attribute payload: %s\n", mnl_attr_get_payload(attr));
+    }
+
+    // print out payload
+    
 }
 
