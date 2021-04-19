@@ -122,7 +122,7 @@ another:
     }
     printf("message length received: %d\n", (int)len);
 
-    process_message(rtnl_buffer);
+    process_message(rtnl_buffer, len);
     
 
     ret = 0;

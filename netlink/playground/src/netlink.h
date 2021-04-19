@@ -170,17 +170,53 @@ static void *mnl_attr_get_payload(const struct nlattr *attr)
         return (void *)attr + MNL_ATTR_HDRLEN;
 }
 
-static struct nlmsghdr *mnl_nlmsg_next(const struct nlmsghdr *nlh)
+// Update the unread buffer length
+// Return the next nlmsghdr struct pointer
+static struct nlmsghdr *mnl_nlmsg_next(const struct nlmsghdr *nlh, int *len)
 {
+    *len -= MNL_ALIGN(nlh->nlmsg_len);
     return (struct nlmsghdr *)((void *)nlh + MNL_ALIGN(nlh->nlmsg_len));
 }
 
-void process_message(const void *buf)
+
+
+static bool mnl_nlmsg_ok(const struct nlmsghdr *nlh, int len)
+{
+        return len >= (int)nlh->nlmsg_len &&
+               nlh->nlmsg_len >= sizeof(struct nlmsghdr);
+}
+
+// numbytes: is needed for the loop condition
+void process_message(const void *buf, size_t numbytes)
 {
     const struct nlmsghdr *nlh = buf;
     struct nlattr *attr = NULL;
-    int count = 1;
+    int len = numbytes;
+    // int count = 1;
 
+    while(mnl_nlmsg_ok(nlh, len))
+    {
+        printf("nlmsghdr length: %d\n", nlh->nlmsg_len);
+
+        mnl_attr_for_each(attr, nlh, MNL_ALIGN(sizeof(struct ifinfomsg)))
+        {
+            // printf("number %d attribute type received: %d \n", count, (int)mnl_attr_get_type(attr));
+            // printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
+            if(mnl_attr_get_type(attr) == IFLA_LINKINFO)
+            {
+                printf("met IFLA_LINKINFO");
+            }
+            if(mnl_attr_get_type(attr) == IFLA_IFNAME)
+            {
+                printf("attribute type received: IFLA_IFNAME\n");
+                printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
+            }
+        }
+
+        mnl_nlmsg_next(nlh, &len);
+    }
+
+/*
     printf("first nlmsghdr length: %d\n", nlh->nlmsg_len);
 
     mnl_attr_for_each(attr, nlh, MNL_ALIGN(sizeof(struct ifinfomsg)))
@@ -214,6 +250,7 @@ void process_message(const void *buf)
             printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
         }   
     }
+*/
 
 }
 
