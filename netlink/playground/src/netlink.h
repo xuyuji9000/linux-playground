@@ -140,7 +140,7 @@ void process_message(const void *buf)
     struct nlattr *attr = NULL;
     int count = 1;
 
-    mnl_attr_for_each(attr, nlh, MNL_ALIGN(sizeof(struct ifinfomsg))
+    mnl_attr_for_each(attr, nlh, MNL_ALIGN(sizeof(struct ifinfomsg)))
     {
         
         printf("number %d attribute type received: %d \n", count, (int)mnl_attr_get_type(attr));
