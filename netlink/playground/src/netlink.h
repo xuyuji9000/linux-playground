@@ -11,6 +11,13 @@
 #define MNL_NLMSG_HDRLEN MNL_ALIGN(sizeof(struct nlmsghdr))
 #define MNL_ATTR_HDRLEN MNL_ALIGN(sizeof(struct nlattr))
 
+#define mnl_attr_for_each(attr, nlh, offset) \
+        for ((attr) = mnl_nlmsg_get_payload_offset((nlh), (offset)); \
+             mnl_attr_ok((attr), (char *)mnl_nlmsg_get_payload_tail(nlh) - (char *)(attr)); \
+             (attr) = mnl_attr_next(attr))
+
+
+
 struct mnl_socket {
     int                fd;
     struct sockaddr_nl addr;
@@ -176,11 +183,6 @@ static struct nlattr *mnl_attr_next(const struct nlattr *attr)
         return (struct nlattr *)((void *)attr + MNL_ALIGN(attr->nla_len));
 }
 
-
-#define mnl_attr_for_each(attr, nlh, offset) \
-        for ((attr) = mnl_nlmsg_get_payload_offset((nlh), (offset)); \
-             mnl_attr_ok((attr), (char *)mnl_nlmsg_get_payload_tail(nlh) - (char *)(attr)); \
-             (attr) = mnl_attr_next(attr))
 
 static bool mnl_attr_ok(const struct nlattr *attr, int len)
 {
