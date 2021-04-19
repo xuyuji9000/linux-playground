@@ -125,6 +125,11 @@ static pid_t mnl_socket_get_portid(struct mnl_socket *nl)
     return nl->addr.nl_pid;
 }
 
+static uint16_t mnl_attr_get_type(const struct nlattr *attr)
+{
+        return attr->nla_type & NLA_TYPE_MASK;
+}
+
 void process_message(const void *buf)
 {
     const struct nlmsghdr *nlh = buf;
@@ -133,6 +138,7 @@ void process_message(const void *buf)
     attr = (void *)nlh + MNL_NLMSG_HDRLEN + MNL_ALIGN(sizeof(struct ifinfomsg));
 
     printf("attribute length received: %d\n", attr->nla_len);
+    printf("attribute type received: %d\n", mnl_attr_get_type(attr));
   
 }
 
