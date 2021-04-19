@@ -120,8 +120,10 @@ another:
             ret = -errno;
             goto cleanup;
     }
+    printf("message length received: %d\n", (int)len);
 
-    printf("length received: %d\n", (int)len);
+    process_message(rtnl_buffer);
+    
 
     ret = 0;
 

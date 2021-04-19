@@ -4,6 +4,12 @@
 // here also function as a convention to communicate with kernel
 #define MNL_ALIGNTO 4
 #define MNL_ALIGN(len) (((len)+MNL_ALIGNTO-1) & ~(MNL_ALIGNTO-1))
+#define MNL_NLMSG_HDRLEN MNL_ALIGN(sizeof(struct nlmsghdr))
+
+static void *mnl_nlmsg_get_payload_offset(const struct nlmsghdr *nlh, size_t offset)
+{
+        return (void *)nlh + MNL_NLMSG_HDRLEN + MNL_ALIGN(offset);
+}
 
 struct mnl_socket {
     int                fd;
@@ -119,4 +125,13 @@ static pid_t mnl_socket_get_portid(struct mnl_socket *nl)
     return nl->addr.nl_pid;
 }
 
+void process_message(const struct nlmsghdr *nlh)
+{
+    struct nlattr *attr = NULL;
+
+    attr = (void *)nlh + MNL_NLMSG_HDRLEN + MNL_ALIGN(sizeof(struct ifinfomsg));
+
+    printf("attribute length received: %d\n", attr->nla_len);
+  
+}
 
