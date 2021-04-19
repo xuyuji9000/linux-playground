@@ -178,15 +178,13 @@ void process_message(const void *buf)
 
     mnl_attr_for_each(attr, nlh, MNL_ALIGN(sizeof(struct ifinfomsg)))
     {
-        printf("number %d attribute type received: %d \n", count, (int)mnl_attr_get_type(attr));
-        printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
-        /*
+        // printf("number %d attribute type received: %d \n", count, (int)mnl_attr_get_type(attr));
+        // printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
         if(mnl_attr_get_type(attr) == IFLA_IFNAME)
         {
             printf("attribute type received: IFLA_IFNAME\n");
             printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
         }
-        */
     }
 
 }
