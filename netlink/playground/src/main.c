@@ -121,7 +121,7 @@ another:
             goto cleanup;
     }
     printf("message length received: %d\n", (int)len);
-    printf("struct nlmsghdr size: %d\n", sizeof(struct nlmsghdr));
+    printf("struct nlmsghdr size: %d\n", (int)sizeof(struct nlmsghdr));
     printf("message flag received: %d\n", (int)((struct nlmsghdr *)rtnl_buffer)->nlmsg_flags);
 
     if(!process_message(rtnl_buffer, len))
