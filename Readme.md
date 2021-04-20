@@ -24,7 +24,7 @@
 
 ## Data analysis
 
-- [analysis-kernel-commit-statistics](./analysis-kernel-commit-statistics/Readme.md)
+- [kernel-analysis](./kernel-analysis/Readme.md)
 
 ## Learning Wireguard
 
