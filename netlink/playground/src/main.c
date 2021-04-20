@@ -123,7 +123,10 @@ another:
     printf("message length received: %d\n", (int)len);
 
     if(!process_message(rtnl_buffer, len))
+    {
+        printf("another\n");
         goto another;
+    }
     
 
     ret = 0;

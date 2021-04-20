@@ -230,7 +230,10 @@ bool process_message(const void *buf, size_t numbytes)
     // If the last nlmsghdr message in the current buffer contain NLM_F_MULTI flag
     // A new buffer need to be received
     if(nlh->nlmsg_flags & NLM_F_MULTI) 
+    {
+        printf("is NLM_F_MULTI\n");
         ret = false;
+    }
 
     return ret;
 }
