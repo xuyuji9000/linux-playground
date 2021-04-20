@@ -188,8 +188,9 @@ static bool mnl_nlmsg_ok(const struct nlmsghdr *nlh, int len)
 
 // numbytes: is needed for the loop condition
 // return: 
-// - true: message processing finished
-// - false: The message is part of a multipart message
+// - true: Last message
+//         No need to receive new message
+// - false: Not Last message
 //          Need to receive another message 
 bool process_message(const void *buf, size_t numbytes)
 {
@@ -198,8 +199,7 @@ bool process_message(const void *buf, size_t numbytes)
     int len = numbytes;
     // int count = 1;
 
-    // default false, default nlmsg_flags == NLM_F_MULTI
-    // update to true
+    // default false, need to receive new message
     bool ret = false;
 
     while(mnl_nlmsg_ok(nlh, len))
@@ -225,9 +225,8 @@ bool process_message(const void *buf, size_t numbytes)
             }
         }
 
-        // Not NLM_F_MULTI message
-        // Do not need to receive new message
-        if(!(nlh->nlmsg_flags & NLM_F_MULTI)) 
+        
+        if(NLMSG_DONE == nlh->nlmsg_type ) 
         {
             ret = true;
         }
