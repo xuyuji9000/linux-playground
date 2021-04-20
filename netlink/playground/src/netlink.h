@@ -197,19 +197,16 @@ bool process_message(const void *buf, size_t numbytes)
     const struct nlmsghdr *nlh = buf;
     struct nlattr *attr = NULL;
     int len = numbytes;
-    // int count = 1;
 
     // default false, need to receive new message
     bool ret = false;
 
     while(mnl_nlmsg_ok(nlh, len))
     {
-        printf("nlmsghdr length: %d\n", nlh->nlmsg_len);
-
         mnl_attr_for_each(attr, nlh, MNL_ALIGN(sizeof(struct ifinfomsg)))
         {
-            // printf("number %d attribute type received: %d \n", count, (int)mnl_attr_get_type(attr));
-            // printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
+            // debug info
+            /*
             if(mnl_attr_get_type(attr) == IFLA_LINKINFO)
             {
                 printf("met IFLA_LINKINFO\n");
@@ -218,6 +215,7 @@ bool process_message(const void *buf, size_t numbytes)
             {
                 printf("met IFLA_INFO_KIND\n");
             }
+            */
             if(mnl_attr_get_type(attr) == IFLA_IFNAME)
             {
                 printf("attribute type received: IFLA_IFNAME\n");

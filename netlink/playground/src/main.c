@@ -131,7 +131,6 @@ another:
 
     if(!process_message(rtnl_buffer, len))
     {
-        printf("another\n");
         goto another;
     }
     
