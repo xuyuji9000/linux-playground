@@ -191,7 +191,7 @@ static bool mnl_nlmsg_ok(const struct nlmsghdr *nlh, int len)
 // - true: message processing finished
 // - false: The message is part of a multipart message
 //          Need to receive another message 
-void process_message(const void *buf, size_t numbytes)
+bool process_message(const void *buf, size_t numbytes)
 {
     const struct nlmsghdr *nlh = buf;
     struct nlattr *attr = NULL;
