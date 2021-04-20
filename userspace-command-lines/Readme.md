@@ -22,3 +22,5 @@ This folder contains learnings of userspace command lines
 
 - [find](./find.md)
 
+- [xargs](./xargs.md)
+
