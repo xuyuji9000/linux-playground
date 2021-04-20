@@ -197,13 +197,14 @@ bool process_message(const void *buf, size_t numbytes)
     struct nlattr *attr = NULL;
     int len = numbytes;
     // int count = 1;
-    bool ret = true;
+
+    // default false, default nlmsg_flags == NLM_F_MULTI
+    // update to true
+    bool ret = false;
 
     while(mnl_nlmsg_ok(nlh, len))
     {
         printf("nlmsghdr length: %d\n", nlh->nlmsg_len);
-        if(nlh->nlmsg_flags & NLM_F_MULTI)
-            printf("flag NLM_F_MULTI \n");
 
         mnl_attr_for_each(attr, nlh, MNL_ALIGN(sizeof(struct ifinfomsg)))
         {
@@ -224,16 +225,16 @@ bool process_message(const void *buf, size_t numbytes)
             }
         }
 
+        // Not NLM_F_MULTI message
+        // Do not need to receive new message
+        if(!(nlh->nlmsg_flags & NLM_F_MULTI)) 
+        {
+            ret = true;
+        }
+
         nlh =  mnl_nlmsg_next(nlh, &len);
     }
 
-    // If the last nlmsghdr message in the current buffer contain NLM_F_MULTI flag
-    // A new buffer need to be received
-    if(nlh->nlmsg_flags & NLM_F_MULTI) 
-    {
-        printf("is NLM_F_MULTI\n");
-        ret = false;
-    }
 
     return ret;
 }
