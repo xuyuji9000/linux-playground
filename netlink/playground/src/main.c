@@ -123,6 +123,7 @@ another:
     printf("message length received: %d\n", (int)len);
     printf("struct nlmsghdr size: %d\n", (int)sizeof(struct nlmsghdr));
     printf("message flag received: %d\n", (int)((struct nlmsghdr *)rtnl_buffer)->nlmsg_flags);
+    printf("message type received: %d\n", (int)((struct nlmsghdr *)rtnl_buffer)->nlmsg_type);
 
     if(!process_message(rtnl_buffer, len))
     {
