@@ -187,12 +187,17 @@ static bool mnl_nlmsg_ok(const struct nlmsghdr *nlh, int len)
 }
 
 // numbytes: is needed for the loop condition
+// return: 
+// - true: message processing finished
+// - false: The message is part of a multipart message
+//          Need to receive another message 
 void process_message(const void *buf, size_t numbytes)
 {
     const struct nlmsghdr *nlh = buf;
     struct nlattr *attr = NULL;
     int len = numbytes;
     // int count = 1;
+    bool ret = true;
 
     while(mnl_nlmsg_ok(nlh, len))
     {
@@ -221,6 +226,13 @@ void process_message(const void *buf, size_t numbytes)
 
         nlh =  mnl_nlmsg_next(nlh, &len);
     }
+
+    // If the last nlmsghdr message in the current buffer contain NLM_F_MULTI flag
+    // A new buffer need to be received
+    if(nlh->nlmsg_flags & NLM_F_MULTI) 
+        ret = false;
+
+    return ret;
 }
 
 
