@@ -22,6 +22,10 @@
 
     > This video gives historical introduction of the development of operating system.
 
+## Data analysis
+
+- [analysis-kernel-commit-statistics](./analysis-kernel-commit-statistics/Readme.md)
+
 ## Learning Wireguard
 
 - [wireguard](./wireguard/Readme.md)
