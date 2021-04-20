@@ -19,3 +19,6 @@ This folder contains learnings of userspace command lines
 - [bc](./bc.md)
 
    > `bc` does mathmatic calculation in command line
+
+- [find](./find.md)
+
