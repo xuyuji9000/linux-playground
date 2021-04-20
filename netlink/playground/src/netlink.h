@@ -198,17 +198,22 @@ void process_message(const void *buf, size_t numbytes)
     {
         printf("nlmsghdr length: %d\n", nlh->nlmsg_len);
 
+        if (nlh->nlmsg_flags & NLM_F_DUMP_INTR)
+        {
+            printf("met NLM_F_DUMP_INTR\n");
+        }
+
         mnl_attr_for_each(attr, nlh, MNL_ALIGN(sizeof(struct ifinfomsg)))
         {
             // printf("number %d attribute type received: %d \n", count, (int)mnl_attr_get_type(attr));
             // printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
             if(mnl_attr_get_type(attr) == IFLA_LINKINFO)
             {
-                printf("met IFLA_LINKINFO");
+                printf("met IFLA_LINKINFO\n");
             }
             if(mnl_attr_get_type(attr) == IFLA_INFO_KIND)
             {
-                printf("met IFLA_INFO_KIND");
+                printf("met IFLA_INFO_KIND\n");
             }
             if(mnl_attr_get_type(attr) == IFLA_IFNAME)
             {
@@ -219,43 +224,6 @@ void process_message(const void *buf, size_t numbytes)
 
         nlh =  mnl_nlmsg_next(nlh, &len);
     }
-
-/*
-    printf("first nlmsghdr length: %d\n", nlh->nlmsg_len);
-
-    mnl_attr_for_each(attr, nlh, MNL_ALIGN(sizeof(struct ifinfomsg)))
-    {
-        // printf("number %d attribute type received: %d \n", count, (int)mnl_attr_get_type(attr));
-        // printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
-        if(mnl_attr_get_type(attr) == IFLA_LINKINFO)
-        {
-            printf("met IFLA_LINKINFO");
-        }
-        if(mnl_attr_get_type(attr) == IFLA_IFNAME)
-        {
-            printf("attribute type received: IFLA_IFNAME\n");
-            printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
-        }
-    }
-    
-    nlh = mnl_nlmsg_next(nlh);
-
-    mnl_attr_for_each(attr, nlh, MNL_ALIGN(sizeof(struct ifinfomsg)))
-    {   
-        // printf("number %d attribute type received: %d \n", count, (int)mnl_attr_get_type(attr));
-        // printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
-        if(mnl_attr_get_type(attr) == IFLA_LINKINFO)
-        {   
-            printf("met IFLA_LINKINFO");
-        }   
-        if(mnl_attr_get_type(attr) == IFLA_IFNAME)
-        {   
-            printf("attribute type received: IFLA_IFNAME\n");
-            printf("attribute payload: %s\n", (char *)mnl_attr_get_payload(attr));
-        }   
-    }
-*/
-
 }
 
 
