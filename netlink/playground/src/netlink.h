@@ -198,10 +198,7 @@ void process_message(const void *buf, size_t numbytes)
     {
         printf("nlmsghdr length: %d\n", nlh->nlmsg_len);
 
-        if (nlh->nlmsg_flags & NLM_F_DUMP_INTR)
-        {
-            printf("met NLM_F_DUMP_INTR\n");
-        }
+        printf("flag %d\n", (int)nlh->nlmsg_flags);
 
         mnl_attr_for_each(attr, nlh, MNL_ALIGN(sizeof(struct ifinfomsg)))
         {
