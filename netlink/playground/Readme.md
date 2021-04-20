@@ -1,4 +1,7 @@
-This folder contains an example using netlink feature to communicate with the kernel.
+This folder contains an example using netlink feature to communicate with the kernel, and list network interface names.
+
+
+# Commands
 
 - Build
 
@@ -11,19 +14,6 @@ gcc -o main main.c
 
 ``` shell
 gcc -Wall -g ./main.c
-```
-
-- Package source code
-
-``` shell
-tar -cf src.tar ./src
-```
-
-- Extract source code 
-
-
-``` shell
-tar -x -v -f ./src.tar
 ```
 
 - Generate tag file
