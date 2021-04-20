@@ -21,6 +21,16 @@ This document contains examples related to `find`[2] command.
 
   > `xargs`'s `-I` parameter specifies the string to be replaced[3][4]
 
+- Find all directory contains *.git* directory in the current directory
+
+    `find . -type d -exec test -e '{}/.git' ';' -print -prune`
+
+    > `-type d` only search for the directory type
+
+    > `-exec test -e '{}/.git' ';'` directory needs to contain *./.git*
+
+    > `-prune` don't search children tree
+
 
 # Reference
 
