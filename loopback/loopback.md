@@ -34,6 +34,26 @@ static int __init blackhole_netdev_init(void)
 
 ```
 
+
+- What does `alloc_netdev` do?
+
+``` C
+// include/linux/netdevice.h
+#define alloc_netdev(sizeof_priv, name, name_assign_type, setup) \
+        alloc_netdev_mqs(sizeof_priv, name, name_assign_type, setup, 1, 1)
+```
+
+``` C
+// net/core/dev.c
+struct net_device *alloc_netdev_mqs(int sizeof_priv, const char *name,
+                unsigned char name_assign_type,
+                void (*setup)(struct net_device *),
+                unsigned int txqs, unsigned int rxqs) 
+{
+}
+```
+
+
 - What does `dev_init_scheduler` do?
 
 ``` C
@@ -45,6 +65,7 @@ void dev_init_scheduler(struct net_device *dev)
         if (dev_ingress_queue(dev))
                 dev_init_scheduler_queue(dev, dev_ingress_queue(dev), &noop_qdisc);
 
+        // What does this line do?
         timer_setup(&dev->watchdog_timer, dev_watchdog, 0);
 }
 ```
