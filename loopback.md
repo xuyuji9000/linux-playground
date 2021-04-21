@@ -34,3 +34,16 @@ static int __init blackhole_netdev_init(void)
 
 ```
 
+- What does `dev_init_scheduler` do?
+
+``` C
+void dev_init_scheduler(struct net_device *dev)
+{
+        dev->qdisc = &noop_qdisc;
+        netdev_for_each_tx_queue(dev, dev_init_scheduler_queue, &noop_qdisc);
+        if (dev_ingress_queue(dev))
+                dev_init_scheduler_queue(dev, dev_ingress_queue(dev), &noop_qdisc);
+
+        timer_setup(&dev->watchdog_timer, dev_watchdog, 0);
+}
+```
