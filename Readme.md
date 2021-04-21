@@ -26,10 +26,6 @@
 
 - [kernel-analysis](./kernel-analysis/Readme.md)
 
-## Learning Wireguard
-
-- [wireguard](./wireguard/Readme.md)
-
 ## Learning kernel
 
 - [execve()](./systemcalls/execve/main.c)
@@ -58,7 +54,7 @@
 
     > Document kernel netlink learning here
 
-
+- [wireguard](./wireguard/Readme.md)
 
 ## Filesystem
 
