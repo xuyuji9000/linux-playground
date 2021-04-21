@@ -16,6 +16,7 @@ device_initcall(blackhole_netdev_init);
 static int __init blackhole_netdev_init(void)
 {
         // allocate a net_device data structure
+        // - 0: need zero private data
         blackhole_netdev = alloc_netdev(0, "blackhole_dev", NET_NAME_UNKNOWN,
                                         blackhole_netdev_setup);
         if (!blackhole_netdev)
@@ -39,6 +40,8 @@ static int __init blackhole_netdev_init(void)
 
 ``` C
 // include/linux/netdevice.h
+
+// using alloc_netdev() indicates the network device has 1 transmission queue
 #define alloc_netdev(sizeof_priv, name, name_assign_type, setup) \
         alloc_netdev_mqs(sizeof_priv, name, name_assign_type, setup, 1, 1)
 ```
