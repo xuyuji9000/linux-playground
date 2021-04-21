@@ -50,8 +50,6 @@
 
     - [Linux Device Drivers, Third Edition](./Linux-Device-Drivers-Third-Edition.pdf)
 
-- [Linux kernel coding style](https://www.kernel.org/doc/html/v4.16/process/coding-style.html)
-
 - [How Program Loads](./bash/How-Program-Loads.md)
 
 - [ELF format](./ELF_format/Readme.md)
