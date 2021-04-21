@@ -56,7 +56,7 @@
 
 - [wireguard](./wireguard/Readme.md)
 
-- [loopback](loopback.md)
+- [loopback](./loopback/Readme.md)
 
     > This file annotates the loopback interface source code.
 
