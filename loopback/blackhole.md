@@ -1,4 +1,4 @@
-This file document the annotation of loopback interface source code.
+This file document the annotation of blackhole interface source code.
 
 File path: `./drivers/net/loopback.c`
 
