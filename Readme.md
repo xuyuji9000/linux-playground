@@ -56,6 +56,10 @@
 
 - [wireguard](./wireguard/Readme.md)
 
+- [loopback](loopback.md)
+
+    > This file annotates the loopback interface source code.
+
 ## Filesystem
 
 - [An introduction to Linux filesystems](https://opensource.com/life/16/10/introduction-linux-filesystems)
