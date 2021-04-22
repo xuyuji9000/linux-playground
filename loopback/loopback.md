@@ -124,8 +124,38 @@ static const struct net_device_ops loopback_ops = {
 ```
 
 
+- What does `loopback_dev_free` do?
+
+``` C
+// ./drivers/net/loopback.c
+
+static void loopback_dev_free(struct net_device *dev)
+{
+        // remove the pointer from the struct net instance 
+        dev_net(dev)->loopback_dev = NULL;
+        
+        // Free, because inside loopback_dev_init allocated lstats
+        free_percpu(dev->lstats);
+}
 
 
+```
+
+
+``` C
+// ./drivers/net/loopback.c
+
+static int loopback_dev_init(struct net_device *dev)
+{
+        // What does netdev_alloc_pcpu_stats do?
+        dev->lstats = netdev_alloc_pcpu_stats(struct pcpu_lstats);
+        if (!dev->lstats)
+                return -ENOMEM;
+        return 0;
+}
+
+
+```
 
 
 
