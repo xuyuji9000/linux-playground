@@ -12,3 +12,5 @@ This folder annotates the network interface *loopback* source code.
 
     > The file is *./drivers/net/loopback.c* .
 
+- [ethtool](./ethtool.md)
+
