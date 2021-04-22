@@ -66,44 +66,61 @@ static __net_init int loopback_net_init(struct net *net)
 static void loopback_setup(struct net_device *dev)
 {
         // loopback_ethtool_ops:  implement ethtool_ops API
-        // eth_header_ops: What is for?
+        // eth_header_ops: This is for packet header processing
+        // loopback_ops: What does this do?
         gen_lo_setup(dev, (64 * 1024), &loopback_ethtool_ops, &eth_header_ops,
                      &loopback_ops, loopback_dev_free);
 }
 
+/*
+ * int (*ndo_init)(struct net_device *dev);
+ *     This function is called once when a network device is registered.
+ *     The network device can use this for any late stage initialization
+ *     or semantic validation. It can fail with an error code which will
+ *     be propagated back to register_netdev.
 
-static void gen_lo_setup(struct net_device *dev,
-                         unsigned int mtu,
-                         const struct ethtool_ops *eth_ops,
-                         const struct header_ops *hdr_ops,
-                         const struct net_device_ops *dev_ops,
-                         void (*dev_destructor)(struct net_device *dev))
-{       
-        dev->mtu                = mtu;
-        dev->hard_header_len    = ETH_HLEN;     /* 14   */
-        dev->min_header_len     = ETH_HLEN;     /* 14   */
-        dev->addr_len           = ETH_ALEN;     /* 6    */
-        dev->type               = ARPHRD_LOOPBACK;      /* 0x0001*/
-        dev->flags              = IFF_LOOPBACK;
-        dev->priv_flags         |= IFF_LIVE_ADDR_CHANGE | IFF_NO_QUEUE;
-        netif_keep_dst(dev);    
-        dev->hw_features        = NETIF_F_GSO_SOFTWARE;
-        dev->features           = NETIF_F_SG | NETIF_F_FRAGLIST
-                | NETIF_F_GSO_SOFTWARE
-                | NETIF_F_HW_CSUM
-                | NETIF_F_RXCSUM
-                | NETIF_F_SCTP_CRC
-                | NETIF_F_HIGHDMA
-                | NETIF_F_LLTX
-                | NETIF_F_NETNS_LOCAL
-                | NETIF_F_VLAN_CHALLENGED
-                | NETIF_F_LOOPBACK;
-        dev->ethtool_ops        = eth_ops;
-        dev->header_ops         = hdr_ops;
-        dev->netdev_ops         = dev_ops;
-        dev->needs_free_netdev  = true;
-        dev->priv_destructor    = dev_destructor;
-}
+ * netdev_tx_t (*ndo_start_xmit)(struct sk_buff *skb,
+ *                               struct net_device *dev);
+ *      Called when a packet needs to be transmitted.
+ *      Returns NETDEV_TX_OK.  Can return NETDEV_TX_BUSY, but you should stop
+ *      the queue before that can happen; it's for obsolete devices and weird
+ *      corner cases, but the stack really does a non-trivial amount
+ *      of useless work if you return NETDEV_TX_BUSY.
+ *      Required; cannot be NULL. * netdev_tx_t (*ndo_start_xmit)(struct sk_buff *skb,
+ *                               struct net_device *dev);
+ *      Called when a packet needs to be transmitted.
+ *      Returns NETDEV_TX_OK.  Can return NETDEV_TX_BUSY, but you should stop
+ *      the queue before that can happen; it's for obsolete devices and weird
+ *      corner cases, but the stack really does a non-trivial amount
+ *      of useless work if you return NETDEV_TX_BUSY.
+ *      Required; cannot be NULL.
+
+ * void (*ndo_get_stats64)(struct net_device *dev,
+ *                         struct rtnl_link_stats64 *storage);
+ * struct net_device_stats* (*ndo_get_stats)(struct net_device *dev);
+ *      Called when a user wants to get the network device usage
+ *      statistics. Drivers must do one of the following:
+ *      1. Define @ndo_get_stats64 to fill in a zero-initialised
+ *         rtnl_link_stats64 structure passed by the caller.
+ *      2. Define @ndo_get_stats to update a net_device_stats structure
+ *         (which should normally be dev->stats) and return a pointer to
+ *         it. The structure may be changed asynchronously only if each
+ *         field is written atomically.
+ *      3. Update dev->stats asynchronously and atomically, and define
+ *         neither operation.
+
+ * int (*ndo_set_mac_address)(struct net_device *dev, void *addr);
+ *      This function  is called when the Media Access Control address
+ *      needs to be changed. If this interface is not defined, the
+ *      MAC address can not be changed.
+
+ */
+static const struct net_device_ops loopback_ops = {
+        .ndo_init        = loopback_dev_init,
+        .ndo_start_xmit  = loopback_xmit,
+        .ndo_get_stats64 = loopback_get_stats64,
+        .ndo_set_mac_address = eth_mac_addr,
+};   
 ```
 
 
