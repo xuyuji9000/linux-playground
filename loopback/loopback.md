@@ -157,7 +157,7 @@ static int loopback_dev_init(struct net_device *dev)
 
 ```
 
-
+- How does per-cpu variable assignment and free works?
 
 
 
