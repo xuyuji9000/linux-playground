@@ -65,6 +65,8 @@ static __net_init int loopback_net_init(struct net *net)
  */
 static void loopback_setup(struct net_device *dev)
 {
+        // loopback_ethtool_ops:  implement ethtool_ops API
+        // eth_header_ops: What is for?
         gen_lo_setup(dev, (64 * 1024), &loopback_ethtool_ops, &eth_header_ops,
                      &loopback_ops, loopback_dev_free);
 }
