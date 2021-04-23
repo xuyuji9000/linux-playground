@@ -87,14 +87,7 @@ static void loopback_setup(struct net_device *dev)
  *      the queue before that can happen; it's for obsolete devices and weird
  *      corner cases, but the stack really does a non-trivial amount
  *      of useless work if you return NETDEV_TX_BUSY.
- *      Required; cannot be NULL. * netdev_tx_t (*ndo_start_xmit)(struct sk_buff *skb,
- *                               struct net_device *dev);
- *      Called when a packet needs to be transmitted.
- *      Returns NETDEV_TX_OK.  Can return NETDEV_TX_BUSY, but you should stop
- *      the queue before that can happen; it's for obsolete devices and weird
- *      corner cases, but the stack really does a non-trivial amount
- *      of useless work if you return NETDEV_TX_BUSY.
- *      Required; cannot be NULL.
+ *      Required; cannot be NULL. 
 
  * void (*ndo_get_stats64)(struct net_device *dev,
  *                         struct rtnl_link_stats64 *storage);
@@ -193,7 +186,13 @@ static int loopback_dev_init(struct net_device *dev)
                                                 __alignof__(type), gfp)
 ```
 
+- How to loop through CPU?
 
+``` C
+// include/linux/cpumask.h
+
+#define for_each_possible_cpu(cpu) for_each_cpu((cpu), cpu_possible_mask)
+```
 
 
 
