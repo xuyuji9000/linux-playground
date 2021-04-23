@@ -15,6 +15,7 @@ struct pernet_operations __net_initdata loopback_net_ops = {
 ``` C
 // net/core/dev.c
 
+// This function is responsible for network device subsystem initialization
 static int __init net_dev_init(void)
 {
 
@@ -129,9 +130,10 @@ static const struct net_device_ops loopback_ops = {
 ``` C
 // ./drivers/net/loopback.c
 
+// Release resources, loopback device used
 static void loopback_dev_free(struct net_device *dev)
 {
-        // remove the pointer from the struct net instance 
+        // Clear the loopback device pointer from the struct net instance 
         dev_net(dev)->loopback_dev = NULL;
         
         // Free, because inside loopback_dev_init allocated lstats
@@ -157,8 +159,39 @@ static int loopback_dev_init(struct net_device *dev)
 
 ```
 
-- How does per-cpu variable assignment and free works?
+- How is the per-cpu variable allocated?
 
+- How does `netdev_alloc_pcpu_stats` works?
+
+``` C
+// include/linux/netdevice.h
+
+#define netdev_alloc_pcpu_stats(type)                                   \
+        __netdev_alloc_pcpu_stats(type, GFP_KERNEL)
+
+#define __netdev_alloc_pcpu_stats(type, gfp)                            \
+({                                                                      \
+        typeof(type) __percpu *pcpu_stats = alloc_percpu_gfp(type, gfp);\
+        if (pcpu_stats) {                                               \
+                int __cpu;                                              \
+                for_each_possible_cpu(__cpu) {                          \
+                        typeof(type) *stat;                             \
+                        stat = per_cpu_ptr(pcpu_stats, __cpu);          \
+                        u64_stats_init(&stat->syncp);                   \
+                }                                                       \
+        }                                                               \
+        pcpu_stats;                                                     \
+})
+
+```
+
+``` C
+// include/linux/percpu.h
+
+#define alloc_percpu_gfp(type, gfp)                                     \
+        (typeof(type) __percpu *)__alloc_percpu_gfp(sizeof(type),       \
+                                                __alignof__(type), gfp)
+```
 
 
 
