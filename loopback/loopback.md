@@ -192,6 +192,20 @@ static int loopback_dev_init(struct net_device *dev)
 // include/linux/cpumask.h
 
 #define for_each_possible_cpu(cpu) for_each_cpu((cpu), cpu_possible_mask)
+
+
+/**
+ * for_each_cpu - iterate over every cpu in a mask
+ * @cpu: the (optionally unsigned) integer iterator
+ * @mask: the cpumask pointer
+ *
+ * After the loop, cpu is >= nr_cpu_ids.
+ */
+#define for_each_cpu(cpu, mask)                         \
+        for ((cpu) = -1;                                \
+                (cpu) = cpumask_next((cpu), (mask)),    \
+                (cpu) < nr_cpu_ids;)
+
 ```
 
 
