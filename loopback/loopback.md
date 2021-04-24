@@ -225,8 +225,57 @@ static int __init nrcpus(char *str)
 }
 ```
 
+- How does loopback read cpu status?
+
+``` C
+// ./drivers/net/loopback.c
+
+// with `dev_lstats_read` function
+
+void dev_lstats_read(struct net_device *dev, u64 *packets, u64 *bytes)
+{
+        int i;
+
+        *packets = 0;
+        *bytes = 0;
+
+        for_each_possible_cpu(i) {
+                const struct pcpu_lstats *lb_stats;
+                u64 tbytes, tpackets;
+                unsigned int start;
+
+                // - how the `dev->lstats` is initiated
+                // - `per_cpu_ptr` function can also be a point for exploration
+                //   But will skip for now, this function is a level deepr 
+                //   And serves as a helper function
+                lb_stats = per_cpu_ptr(dev->lstats, i); 
+                do {
+                        start = u64_stats_fetch_begin_irq(&lb_stats->syncp);
+                        tpackets = u64_stats_read(&lb_stats->packets);
+                        tbytes = u64_stats_read(&lb_stats->bytes);
+                } while (u64_stats_fetch_retry_irq(&lb_stats->syncp, start));
+                *bytes   += tbytes;
+                *packets += tpackets;
+        }   
+}
+EXPORT_SYMBOL(dev_lstats_read);
+
+```
 
 
+``` C
+// include/linux/netdevice.h
+
+// What is `pcpu_lstats` data structure?
+
+struct pcpu_lstats {
+        u64_stats_t packets;
+        u64_stats_t bytes;
+        struct u64_stats_sync syncp;
+} __aligned(2 * sizeof(u64));
+
+
+```
 
 
 
