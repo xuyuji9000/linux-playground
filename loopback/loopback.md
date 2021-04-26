@@ -117,6 +117,21 @@ static const struct net_device_ops loopback_ops = {
 };   
 ```
 
+- What is `eth_header_ops`?
+
+``` C
+// net/ethernet/eth.c
+
+const struct header_ops eth_header_ops ____cacheline_aligned = {
+	.create		= eth_header,
+	.parse		= eth_header_parse,
+	.cache		= eth_header_cache,
+	.cache_update	= eth_header_cache_update,
+	.parse_protocol	= eth_header_parse_protocol,
+};
+
+```
+
 
 - What does `loopback_dev_free` do?
 
