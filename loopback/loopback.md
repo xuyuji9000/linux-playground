@@ -292,6 +292,102 @@ struct pcpu_lstats {
 
 ```
 
+- How does `dev->hw_features` inside `gen_lo_setup` works?
+
+``` C
+// ./drivers/net/loopback.c
+
+static void gen_lo_setup(struct net_device *dev,
+                         unsigned int mtu,
+                         const struct ethtool_ops *eth_ops,
+                         const struct header_ops *hdr_ops,
+                         const struct net_device_ops *dev_ops,
+                         void (*dev_destructor)(struct net_device *dev))
+{
+
+    // ...
+    dev->hw_features        = NETIF_F_GSO_SOFTWARE;
+    // ...
+
+}
+
+```
+
+``` C
+// include/linux/netdev_features.h
+
+/* List of features with software fallbacks. */
+#define NETIF_F_GSO_SOFTWARE    (NETIF_F_ALL_TSO | NETIF_F_GSO_SCTP |        \
+                                 NETIF_F_GSO_UDP_L4 | NETIF_F_GSO_FRAGLIST)
+
+#define NETIF_F_ALL_TSO         (NETIF_F_TSO | NETIF_F_TSO6 | \
+                                 NETIF_F_TSO_ECN | NETIF_F_TSO_MANGLEID)
+
+
+//  How is `NETIF_F_TSO` used?
+#define NETIF_F_TSO             __NETIF_F(TSO)
+
+/* copy'n'paste compression ;) */
+#define __NETIF_F_BIT(bit)      ((netdev_features_t)1 << (bit))
+#define __NETIF_F(name)         __NETIF_F_BIT(NETIF_F_##name##_BIT)
+```
+
+
+``` C
+// include/linux/netdevice.h
+static inline bool net_gso_ok(netdev_features_t features, int gso_type)
+{
+        netdev_features_t feature = (netdev_features_t)gso_type << NETIF_F_GSO_SHIFT;
+
+        /* check flags correspondence */
+        BUILD_BUG_ON(SKB_GSO_TCPV4   != (NETIF_F_TSO >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_DODGY   != (NETIF_F_GSO_ROBUST >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_TCP_ECN != (NETIF_F_TSO_ECN >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_TCP_FIXEDID != (NETIF_F_TSO_MANGLEID >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_TCPV6   != (NETIF_F_TSO6 >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_FCOE    != (NETIF_F_FSO >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_GRE     != (NETIF_F_GSO_GRE >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_GRE_CSUM != (NETIF_F_GSO_GRE_CSUM >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_IPXIP4  != (NETIF_F_GSO_IPXIP4 >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_IPXIP6  != (NETIF_F_GSO_IPXIP6 >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_UDP_TUNNEL != (NETIF_F_GSO_UDP_TUNNEL >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_UDP_TUNNEL_CSUM != (NETIF_F_GSO_UDP_TUNNEL_CSUM >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_PARTIAL != (NETIF_F_GSO_PARTIAL >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_TUNNEL_REMCSUM != (NETIF_F_GSO_TUNNEL_REMCSUM >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_SCTP    != (NETIF_F_GSO_SCTP >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_ESP != (NETIF_F_GSO_ESP >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_UDP != (NETIF_F_GSO_UDP >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_UDP_L4 != (NETIF_F_GSO_UDP_L4 >> NETIF_F_GSO_SHIFT));
+        BUILD_BUG_ON(SKB_GSO_FRAGLIST != (NETIF_F_GSO_FRAGLIST >> NETIF_F_GSO_SHIFT));
+
+        return (features & feature) == feature;
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
