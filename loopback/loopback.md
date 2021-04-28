@@ -306,6 +306,9 @@ static void gen_lo_setup(struct net_device *dev,
 {
 
     // ...
+    dev->type               = ARPHRD_LOOPBACK;
+    dev->flags              = IFF_LOOPBACK;
+    // ...
     dev->hw_features        = NETIF_F_GSO_SOFTWARE;
     // ...
 
@@ -442,11 +445,117 @@ EXPORT_SYMBOL(dev_queue_xmit);
 ```
 
 
+- What does `loopback_xmit` do?
 
 
+``` C
+// ./drivers/net/loopback.c
+
+static netdev_tx_t loopback_xmit(struct sk_buff *skb,
+                                 struct net_device *dev)
+{
+        // ...
+        if (likely(netif_rx(skb) == NET_RX_SUCCESS))
+                dev_lstats_add(dev, len);
+        // ...
+};
+```
 
 
+``` C
+// net/core/dev.c
 
+//*
+ /	netif_rx	-	post buffer to the network code
+ /	@skb: buffer to post
+ /
+ /	This function receives a packet from a device driver and queues it for
+ /	the upper (protocol) levels to process.  It always succeeds. The buffer
+ /	may be dropped during processing for congestion control or by the
+ /	protocol layers.
+ /
+ /	return values:
+ /	NET_RX_SUCCESS	(no congestion)
+ /	NET_RX_DROP     (packet was dropped)
+ /
+ //
+
+int netif_rx(struct sk_buff *skb)
+{
+	int ret;
+
+	trace_netif_rx_entry(skb);
+
+	ret = netif_rx_internal(skb);
+	trace_netif_rx_exit(ret);
+
+	return ret;
+}
+EXPORT_SYMBOL(netif_rx);
+
+```
+
+- How is `ARPHRD_LOOPBACK` used in other parts of the kernel?
+
+``` shell
+# locate files which use ARPHRD_LOOPBACK
+
+sh <<script
+git grep ARPHRD_LOOPBACK | grep -v -e llc \
+-e infiniband \
+-e decnet \
+-e dn_route.h \
+-e appletalk \
+-e pktgen.c
+script
+```
+
+
+``` C
+// net/ipv6/addrconf.c
+
+static int addrconf_notify(struct notifier_block *this, unsigned long event,
+                           void *ptr)
+{
+// ...
+                case ARPHRD_LOOPBACK:
+                        init_loopback(dev);
+                        break;
+// ...
+}
+
+static struct notifier_block ipv6_dev_notf = {
+        .notifier_call = addrconf_notify,
+        .priority = ADDRCONF_NOTIFY_PRIORITY,
+};
+
+
+int __init addrconf_init(void)
+{
+// ...
+register_netdevice_notifier(&ipv6_dev_notf);
+// ...
+}
+
+
+static void init_loopback(struct net_device *dev)
+{
+        struct inet6_dev  *idev;
+
+        /* ::1 */
+
+        ASSERT_RTNL();
+
+        idev = ipv6_find_idev(dev);
+        if (IS_ERR(idev)) {
+                pr_debug("%s: add_dev failed\n", __func__);
+                return;
+        }
+
+        add_addr(idev, &in6addr_loopback, 128, IFA_HOST);
+}
+
+```
 
 
 
