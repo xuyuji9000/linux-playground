@@ -316,25 +316,38 @@ static void gen_lo_setup(struct net_device *dev,
 ``` C
 // include/linux/netdev_features.h
 
+// Where is `NETIF_F_GSO_SOFTWARE` defined?
 /* List of features with software fallbacks. */
 #define NETIF_F_GSO_SOFTWARE    (NETIF_F_ALL_TSO | NETIF_F_GSO_SCTP |        \
                                  NETIF_F_GSO_UDP_L4 | NETIF_F_GSO_FRAGLIST)
 
+//  Where is `NETIF_F_ALL_TSO` defined?
 #define NETIF_F_ALL_TSO         (NETIF_F_TSO | NETIF_F_TSO6 | \
                                  NETIF_F_TSO_ECN | NETIF_F_TSO_MANGLEID)
 
 
-//  How is `NETIF_F_TSO` used?
+// Where is `NETIF_F_TSO` defined?
 #define NETIF_F_TSO             __NETIF_F(TSO)
 
 /* copy'n'paste compression ;) */
 #define __NETIF_F_BIT(bit)      ((netdev_features_t)1 << (bit))
 #define __NETIF_F(name)         __NETIF_F_BIT(NETIF_F_##name##_BIT)
+
+
+enum {
+    // ...
+    /**/NETIF_F_GSO_SHIFT,          /* keep the order of SKB_GSO_* bits */
+    NETIF_F_TSO_BIT                 /* ... TCPv4 segmentation */
+            = NETIF_F_GSO_SHIFT,
+    // ...
+};
 ```
 
 
 ``` C
 // include/linux/netdevice.h
+
+// What logic is using `NETIF_F_TSO`?
 static inline bool net_gso_ok(netdev_features_t features, int gso_type)
 {
         netdev_features_t feature = (netdev_features_t)gso_type << NETIF_F_GSO_SHIFT;
@@ -364,9 +377,69 @@ static inline bool net_gso_ok(netdev_features_t features, int gso_type)
 }
 ```
 
+``` C
+// include/linux/netdevice.h
+
+// What is calling `net_gso_ok`?
+
+static inline bool skb_gso_ok(struct sk_buff *skb, netdev_features_t features)
+{
+        return net_gso_ok(features, skb_shinfo(skb)->gso_type) &&
+               (!skb_has_frag_list(skb) || (features & NETIF_F_FRAGLIST));
+}
+```
 
 
+``` C
+// include/linux/netdevice.h
 
+// What is calling `skb_gso_ok`?
+
+static inline bool netif_needs_gso(struct sk_buff *skb,
+                                   netdev_features_t features)
+{
+        return skb_is_gso(skb) && (!skb_gso_ok(skb, features) ||
+                unlikely((skb->ip_summed != CHECKSUM_PARTIAL) &&
+                         (skb->ip_summed != CHECKSUM_UNNECESSARY)));
+}
+```
+
+``` C
+// net/core/dev.c
+
+// What is calling `netif_needs_gso`?
+
+static struct sk_buff *validate_xmit_skb(struct sk_buff *skb, struct net_device *dev, bool *again)
+{
+    // ...
+    if (netif_needs_gso(skb, features)) {
+        // ...
+    }
+    // ...
+}
+```
+
+``` C
+// net/core/dev.c
+
+// What is calling `validate_xmit_skb`?
+
+
+static int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
+{
+    // ...
+    skb = validate_xmit_skb(skb, dev, &again);
+    // ...
+}
+ 
+
+
+int dev_queue_xmit(struct sk_buff *skb)
+{
+        return __dev_queue_xmit(skb, NULL);
+}
+EXPORT_SYMBOL(dev_queue_xmit);
+```
 
 
 
