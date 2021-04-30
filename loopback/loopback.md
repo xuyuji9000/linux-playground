@@ -1,4 +1,4 @@
-This file documents the source code annotation of loopback network device.
+this file documents the source code annotation of loopback network device.
 
 - Where is loopback registered?
 
@@ -530,6 +530,7 @@ static struct notifier_block ipv6_dev_notf = {
 };
 
 
+// How is `addrconf_init` used?
 int __init addrconf_init(void)
 {
 // ...
@@ -552,8 +553,51 @@ static void init_loopback(struct net_device *dev)
                 return;
         }
 
+        // What does this `add_addr` do?
+        // What is `in6addr_loopback`?
         add_addr(idev, &in6addr_loopback, 128, IFA_HOST);
 }
+
+static void add_addr(struct inet6_dev *idev, const struct in6_addr *addr,
+                     int plen, int scope)
+{
+        struct inet6_ifaddr *ifp;
+        struct ifa6_config cfg = {
+                .pfx = addr,
+                .plen = plen,
+                .ifa_flags = IFA_F_PERMANENT,
+                .valid_lft = INFINITY_LIFE_TIME,
+                .preferred_lft = INFINITY_LIFE_TIME,
+                .scope = scope
+        };   
+
+        ifp = ipv6_add_addr(idev, &cfg, true, NULL);
+        if (!IS_ERR(ifp)) {
+                spin_lock_bh(&ifp->lock);
+                ifp->flags &= ~IFA_F_TENTATIVE;
+                spin_unlock_bh(&ifp->lock);
+                rt_genid_bump_ipv6(dev_net(idev->dev));
+                ipv6_ifa_notify(RTM_NEWADDR, ifp);
+                in6_ifa_put(ifp);
+        }    
+}
+
+```
+
+
+``` C
+// net/ipv6/af_inet6.c
+
+static int __init inet6_init(void)
+{
+// ...
+        err = addrconf_init();
+        if (err)
+                goto addrconf_fail;
+// ...
+}
+
+module_init(inet6_init);
 
 ```
 
