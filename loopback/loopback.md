@@ -601,7 +601,19 @@ module_init(inet6_init);
 
 ```
 
+- How is `IFF_LOOPBACK` used?
 
+``` shell
+# locate files which use IFF_LOOPBACK
+
+sh <<script
+git grep IFF_LOOPBACK | grep -v -e infiniband \
+-e arcnet \
+-e chelsio \
+-e appletalk \
+-e decnet 
+script
+```
 
 
 
