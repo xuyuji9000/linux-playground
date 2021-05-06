@@ -102,3 +102,51 @@ static int enqueue_to_backlog(struct sk_buff *skb, int cpu,
 
 ```
 
+``` C
+// net/core/dev.c
+
+static int process_backlog(struct napi_struct *napi, int quota)
+{       
+    // ...
+                if (skb_queue_empty(&sd->input_pkt_queue)) {
+                        /*
+                         * Inline a custom version of __napi_complete().
+                         * only current cpu owns and manipulates this napi,
+                         * and NAPI_STATE_SCHED is the only possible flag set
+                         * on backlog.
+                         * We can use a plain write instead of clear_bit(),
+                         * and we dont need an smp_mb() memory barrier.
+                         */
+                        napi->state = 0;
+                        again = false;
+                } else {
+                        skb_queue_splice_tail_init(&sd->input_pkt_queue,
+                                                   &sd->process_queue);
+                }
+    // ...
+}
+```
+
+``` C
+// net/core/dev.c
+
+/*
+ *      Initialize the DEV module. At boot time this walks the device list and
+ *      unhooks any devices that fail to initialise (normally hardware not
+ *      present) and leaves us with a valid list of present and active devices.
+ *
+ */
+
+/*
+ *       This is called single threaded during boot, so no need
+ *       to take the rtnl semaphore.
+ */
+static int __init net_dev_init(void)
+{
+    // ...
+    sd->backlog.poll = process_backlog;
+    // ...
+}
+
+subsys_initcall(net_dev_init);
+```
