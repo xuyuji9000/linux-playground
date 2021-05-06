@@ -1,7 +1,7 @@
 This folder is used to document the learning of frame reception in kernel source code.
 
 
-- loopback network device receive frame.
+- Preserve the frame inside a queue
 
 
 ``` C
@@ -127,6 +127,8 @@ static int process_backlog(struct napi_struct *napi, int quota)
 }
 ```
 
+- Register the `NET_RX_SOFTIRQ` as the bottom half of the interrupt
+
 ``` C
 // net/core/dev.c
 
@@ -146,7 +148,12 @@ static int __init net_dev_init(void)
     // ...
     sd->backlog.poll = process_backlog;
     // ...
+    open_softirq(NET_RX_SOFTIRQ, net_rx_action);
+    // ...
 }
 
 subsys_initcall(net_dev_init);
 ```
+
+
+
