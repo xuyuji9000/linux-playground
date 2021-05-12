@@ -6,6 +6,6 @@ This folder provides a C example of how blake2s initialization vector(IV) is gen
 - Build command
 
 ``` C
-gcc -o main ./main.c
+gcc -o main ./main.c -lm
 ```
 
