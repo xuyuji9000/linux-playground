@@ -1,16 +1,20 @@
+// This program calculate the initialization vector from prime number 2.
+
 #include <stdio.h>
 #include <math.h>
 
+#define PRIME_NUMBER 2.0
+
 int main()
 {
-    double input = 2.0, output;
+    double output;
     
     double integer; 
-    output = modf(sqrt(input), &integer);
-    output = output*pow(10.0, 32.0);
+    
+    // Get fraction part of the sqaure root
+    output = modf(sqrt(PRIME_NUMBER), &integer);
+    output = output*((long)1<<32);
 
-    long long int tmp = (long long int) output;
-    printf("%lld\n", tmp);
+    printf("%lx\n", (long int)output);
     return 0;
 }
-
