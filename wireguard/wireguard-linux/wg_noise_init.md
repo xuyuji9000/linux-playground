@@ -18,6 +18,39 @@ void __init wg_noise_init(void)
 ```
 
 ``` C
+// include/crypto/blake2s.h
+static inline void __blake2s_init(struct blake2s_state *state, size_t outlen,
+                                  const void *key, size_t keylen)
+{
+        state->h[0] = BLAKE2S_IV0 ^ (0x01010000 | keylen << 8 | outlen);
+        state->h[1] = BLAKE2S_IV1;
+        state->h[2] = BLAKE2S_IV2;
+        state->h[3] = BLAKE2S_IV3;
+        state->h[4] = BLAKE2S_IV4;
+        state->h[5] = BLAKE2S_IV5;
+        state->h[6] = BLAKE2S_IV6;
+        state->h[7] = BLAKE2S_IV7;
+        state->t[0] = 0;
+        state->t[1] = 0;
+        state->f[0] = 0;
+        state->f[1] = 0;
+        state->buflen = 0;
+        state->outlen = outlen;
+        if (keylen) {
+                memcpy(state->buf, key, keylen);
+                memset(&state->buf[keylen], 0, BLAKE2S_BLOCK_SIZE - keylen);
+                state->buflen = BLAKE2S_BLOCK_SIZE;
+        }   
+}
+
+static inline void blake2s_init(struct blake2s_state *state,
+                                const size_t outlen)
+{
+        __blake2s_init(state, outlen, NULL, 0); 
+}
+```
+
+``` C
 // lib/crypto/blake2s.c
 
 void blake2s_update(struct blake2s_state *state, const u8 *in, size_t inlen)
@@ -26,30 +59,6 @@ void blake2s_update(struct blake2s_state *state, const u8 *in, size_t inlen)
 }
 EXPORT_SYMBOL(blake2s_update);
 ```
-
-``` C
-// lib/crypto/blake2s.c
-
-#if IS_ENABLED(CONFIG_CRYPTO_ARCH_HAVE_LIB_BLAKE2S)
-#  define blake2s_compress blake2s_compress_arch
-#else
-#  define blake2s_compress blake2s_compress_generic
-#endif
-```
-
-``` C
-// lib/crypto/blake2s-generic.c
-
-void blake2s_compress_generic(struct blake2s_state *state,const u8 *block,
-                              size_t nblocks, const u32 inc)
-{
-    // ...
-}
-
-EXPORT_SYMBOL(blake2s_compress_generic);
-
-```
-
 
 ``` C
 // include/crypto/internal/blake2s.h
@@ -83,4 +92,29 @@ static inline void __blake2s_update(struct blake2s_state *state,
 }
 
 ```
+
+``` C
+// lib/crypto/blake2s.c
+
+#if IS_ENABLED(CONFIG_CRYPTO_ARCH_HAVE_LIB_BLAKE2S)
+#  define blake2s_compress blake2s_compress_arch
+#else
+#  define blake2s_compress blake2s_compress_generic
+#endif
+```
+
+``` C
+// lib/crypto/blake2s-generic.c
+
+void blake2s_compress_generic(struct blake2s_state *state,const u8 *block,
+                              size_t nblocks, const u32 inc)
+{
+    // ...
+}
+
+EXPORT_SYMBOL(blake2s_compress_generic);
+
+```
+
+
 
