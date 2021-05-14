@@ -18,6 +18,33 @@ void __init wg_noise_init(void)
 ```
 
 ``` C
+// lib/crypto/blake2s.c
+void blake2s_final(struct blake2s_state *state, u8 *out)
+{
+        WARN_ON(IS_ENABLED(DEBUG) && !out);
+        __blake2s_final(state, out, blake2s_compress);
+        memzero_explicit(state, sizeof(*state));
+}
+EXPORT_SYMBOL(blake2s_final);
+```
+
+``` C
+// include/crypto/internal/blake2s.h
+
+static inline void __blake2s_final(struct blake2s_state *state, u8 *out,
+                                   blake2s_compress_t compress)
+{
+        blake2s_set_lastblock(state);
+        memset(state->buf + state->buflen, 0,
+               BLAKE2S_BLOCK_SIZE - state->buflen); /* Padding */
+        (*compress)(state, state->buf, 1, state->buflen);
+        cpu_to_le32_array(state->h, ARRAY_SIZE(state->h));
+        memcpy(out, state->h, state->outlen);
+}
+```
+
+
+``` C
 // include/crypto/blake2s.h
 static inline void __blake2s_init(struct blake2s_state *state, size_t outlen,
                                   const void *key, size_t keylen)
