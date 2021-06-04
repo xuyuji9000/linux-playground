@@ -24,3 +24,5 @@ This folder contains learnings of userspace command lines
 
 - [xargs](./xargs.md)
 
+- [weechat](./weechat.md)
+
