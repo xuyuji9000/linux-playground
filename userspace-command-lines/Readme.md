@@ -26,3 +26,5 @@ This folder contains learnings of userspace command lines
 
 - [weechat](./weechat.md)
 
+- [shell](./shell/Readme.md)
+

@@ -75,14 +75,6 @@
 
   > Try to organize Linux user space command lines related learning here.
 
-## Learning Bash
-
-  - [Advanced Bash-Scripting Guide](https://tldp.org/LDP/abs/abs-guide.pdf)
-
-  - [Bash Reference Manual](https://www.gnu.org/software/bash/manual/html_node/index.html#Top)
-
-  - [Safe ways to do things in bash](https://github.com/anordal/shellharden/blob/master/how_to_do_things_safely_in_bash.md)
-
 ## Linux administration
 
 - Go through Linux admin [tutorial](https://www.tutorialspoint.com/linux_admin/index.htm)
