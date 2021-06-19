@@ -1,3 +1,5 @@
+0. Download Raspberry Pi Imager.[1]
+
 1. Download Desktop OS.[1]
 
 2. Copy image to SD card.[2]
