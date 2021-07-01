@@ -6,6 +6,8 @@ This folder demonstrates bash syntax.
 
 - `source` syntax [example](./examples/source)
 
+- [How Program Loads](./How-Program-Loads.md)
+
 
 
 # Reference

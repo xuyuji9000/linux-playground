@@ -46,8 +46,6 @@
 
     - [Linux Device Drivers, Third Edition](./Linux-Device-Drivers-Third-Edition.pdf)
 
-- [How Program Loads](./bash/How-Program-Loads.md)
-
 - [ELF format](./ELF_format/Readme.md)
 
 - [netlink](./netlink/Readme.md)

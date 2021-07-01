@@ -3,6 +3,8 @@ This folder is used to document the shell related learning and examples.
 > The reason to name this directory `shell` instead of `bash` is that bash is only one of the shells out there.
 > Although bash is probably the most used one.
 
+- [bash](./bash/Readme.md)
+
 # Reference
 
   - [Advanced Bash-Scripting Guide](https://tldp.org/LDP/abs/abs-guide.pdf)
