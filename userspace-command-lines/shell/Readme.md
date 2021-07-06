@@ -13,3 +13,4 @@ This folder is used to document the shell related learning and examples.
 
   - [Safe ways to do things in bash](https://github.com/anordal/shellharden/blob/master/how_to_do_things_safely_in_bash.md)
 
+  - [Fail Fast Bash Scripting](https://dougrichardson.us/notes/fail-fast-bash-scripting.html)
