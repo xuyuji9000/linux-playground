@@ -10,7 +10,7 @@ This folder contains learnings of userspace command lines
 
     > This folder contains `sed` using examples
 
-- [awk](./awk.md)
+- [awk](./awk/Readme.md)
 
 - [touch](touch.md)
 
