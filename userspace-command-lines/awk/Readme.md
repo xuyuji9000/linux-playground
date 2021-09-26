@@ -1,11 +1,5 @@
-- Sum numbers
+This folder contains examples about learning awk.
 
-```
-cat <<EOF > numbers.txt
-2
-2
-3
-EOF
+# Examples
 
-awk '{s+=$1} END {printf s}' numbers.txt
-```
+- [sum-numbers](sum-numbers/Readme.md)
