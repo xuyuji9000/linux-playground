@@ -12,3 +12,4 @@ This folder is used to document learning about using Raspberry Pi.
 
     > Should be able to ssh into the machine after this step.
 
+- [Setup-Dynamic-DNS](./Setup-Dynamic-DNS.md)
